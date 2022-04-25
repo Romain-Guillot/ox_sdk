@@ -1,0 +1,93 @@
+import 'package:flutter/material.dart';
+import 'package:ox_sdk/src/odesign/grid.dart';
+
+
+class ThemeDataExtension {
+  const ThemeDataExtension({
+    required this.errorColor,
+    required this.onErrorColor,
+    required this.infoColor,
+    required this.onInfoColor,
+    required this.successColor,
+    required this.onSuccessColor,
+    required this.onWarningColor,
+    required this.warningColor,
+    required this.padding,
+    required this.paddingBig,
+    required this.paddingSmall,
+    required this.smallBorderRadius,
+    required this.tinyBorderRadius,
+    required this.mediumBorderRadius,
+    required this.bigBorderRadius,
+    required this.mobileScreenMax,
+    required this.barrierColor,
+    required this.pageMargin,
+    required this.backgroundVariant,
+    required this.maxPageWidth,
+    required this.smallComponentPadding,
+    required this.mediumComponentPadding,
+    this.dataGridTheme,
+    this.snackbarMaxSize = 800,
+    this.tooltipTheme,
+  });
+
+  final Color errorColor;
+  final Color onErrorColor;
+  final Color infoColor;
+  final Color onInfoColor;
+  final Color successColor;
+  final Color onSuccessColor;
+  final Color warningColor;
+  final Color onWarningColor;
+  final double padding;
+  final double paddingSmall;
+  final double paddingBig;
+  final double smallComponentPadding;
+  final double mediumComponentPadding;
+  final BorderRadius smallBorderRadius;
+  final BorderRadius mediumBorderRadius;
+  final BorderRadius bigBorderRadius;
+  final BorderRadius tinyBorderRadius;
+  final double mobileScreenMax;
+  final Color barrierColor;
+  final EdgeInsets pageMargin;
+  final Color backgroundVariant;
+  final double maxPageWidth;
+  final ODataGridTheme? dataGridTheme;
+  final double snackbarMaxSize;
+  final OTooltipThemeData? tooltipTheme;
+}
+
+
+class ThemeExtension extends InheritedWidget {
+  ThemeExtension({
+    Key? key,
+    required this.data,
+    required Widget child,
+  }) : super(key: key, child: child);
+
+  final ThemeDataExtension data;
+
+ static ThemeDataExtension of(BuildContext context) {
+    final ThemeExtension? result = context.dependOnInheritedWidgetOfExactType<ThemeExtension>();
+    assert(result != null, 'No ThemeExtension found in context');
+    return result!.data;
+  }
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
+
+}
+
+
+class OTooltipThemeData {
+  const OTooltipThemeData({
+    this.backgroundColor,
+    this.style,
+    this.padding
+  });
+
+  final Color? backgroundColor;
+  final TextStyle? style;
+  final EdgeInsets? padding;
+}
