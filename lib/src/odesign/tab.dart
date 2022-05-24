@@ -23,7 +23,7 @@ class OSwitchBar extends StatelessWidget {
       indicatorWeight: 0,
       indicator: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
-        borderRadius: ThemeExtension.of(context).smallBorderRadius,
+        borderRadius: Theme.of(context).radiuses.small,
       ),
       tabs: tabs
     );

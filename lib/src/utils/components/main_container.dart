@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
+import 'package:ox_sdk/ox_sdk.dart';
 
 
 class MainContainer extends StatelessWidget {
@@ -16,7 +16,9 @@ class MainContainer extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: Container(
         width: double.maxFinite,
-        constraints: BoxConstraints(maxWidth: ThemeExtension.of(context).maxPageWidth),
+        constraints: BoxConstraints(
+          maxWidth: Theme.of(context).constraints.maxPageWidth 
+        ),
         child: child
       ),
     );

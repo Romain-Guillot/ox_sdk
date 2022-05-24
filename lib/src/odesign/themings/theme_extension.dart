@@ -1,83 +1,235 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/grid.dart';
+import 'package:ox_sdk/src/odesign/themings/supporting_colors.dart';
 
 
-class ThemeDataExtension {
-  const ThemeDataExtension({
-    required this.errorColor,
-    required this.onErrorColor,
-    required this.infoColor,
-    required this.onInfoColor,
-    required this.successColor,
-    required this.onSuccessColor,
-    required this.onWarningColor,
-    required this.warningColor,
-    required this.padding,
-    required this.paddingBig,
-    required this.paddingSmall,
-    required this.smallBorderRadius,
-    required this.tinyBorderRadius,
-    required this.mediumBorderRadius,
-    required this.bigBorderRadius,
-    required this.mobileScreenMax,
-    required this.barrierColor,
-    required this.pageMargin,
-    required this.backgroundVariant,
-    required this.maxPageWidth,
-    required this.smallComponentPadding,
-    required this.mediumComponentPadding,
-    this.dataGridTheme,
-    this.snackbarMaxSize = 800,
-    this.tooltipTheme,
-  });
 
-  final Color errorColor;
-  final Color onErrorColor;
-  final Color infoColor;
-  final Color onInfoColor;
-  final Color successColor;
-  final Color onSuccessColor;
-  final Color warningColor;
-  final Color onWarningColor;
-  final double padding;
-  final double paddingSmall;
-  final double paddingBig;
-  final double smallComponentPadding;
-  final double mediumComponentPadding;
-  final BorderRadius smallBorderRadius;
-  final BorderRadius mediumBorderRadius;
-  final BorderRadius bigBorderRadius;
-  final BorderRadius tinyBorderRadius;
-  final double mobileScreenMax;
-  final Color barrierColor;
-  final EdgeInsets pageMargin;
-  final Color backgroundVariant;
-  final double maxPageWidth;
-  final ODataGridTheme? dataGridTheme;
-  final double snackbarMaxSize;
-  final OTooltipThemeData? tooltipTheme;
+
+extension ThemeDataExt on ThemeData {
+  ColorsTheme get colors => extension<ColorsTheme>()!;
+  ConstraintsTheme get constraints => extension<ConstraintsTheme>()!;
+  PaddingsTheme get paddings => extension<PaddingsTheme>()!;
+  MarginTheme get margins => extension<MarginTheme>()!;
+  RadiusesTheme get radiuses => extension<RadiusesTheme>()!;
+  ComponentsTheme get components => extension<ComponentsTheme>()!;
+  ButtonThemes get buttons => extension<ButtonThemes>()!;
 }
 
 
-class ThemeExtension extends InheritedWidget {
-  ThemeExtension({
-    Key? key,
-    required this.data,
-    required Widget child,
-  }) : super(key: key, child: child);
+class ColorsTheme extends ThemeExtension<ColorsTheme> {
+  const ColorsTheme({
+    required this.error,
+    required this.onError,
+    required this.info,
+    required this.onInfo,
+    required this.success,
+    required this.onSuccess,
+    required this.onWarning,
+    required this.warning,
+    required this.supportings
+  });
 
-  final ThemeDataExtension data;
+  final Color error;
+  final Color onError;
+  final Color info;
+  final Color onInfo;
+  final Color success;
+  final Color onSuccess;
+  final Color warning;
+  final Color onWarning;
+  final Map<SupportingColors, SupportingColorData> supportings;
+  
+  @override
+  ThemeExtension<ColorsTheme> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<ColorsTheme> lerp(ThemeExtension<ColorsTheme>? other, double t) {
+    if (other is! ColorsTheme) {
+      return this;
+    }
+    return ColorsTheme(
+      error: Color.lerp(error, other.error, t)!,
+      onError: Color.lerp(onError, other.onError, t)!,
+      info: Color.lerp(info, other.info, t)!,
+      onInfo: Color.lerp(onInfo, other.onInfo, t)!,
+      success: Color.lerp(success, other.success, t)!,
+      onSuccess: Color.lerp(onSuccess, other.onSuccess, t)!,
+      warning: Color.lerp(warning, other.warning, t)!,
+      onWarning: Color.lerp(onWarning, other.onWarning, t)!,
+      supportings: supportings
+    );
+  }
+}
 
- static ThemeDataExtension of(BuildContext context) {
-    final ThemeExtension? result = context.dependOnInheritedWidgetOfExactType<ThemeExtension>();
-    assert(result != null, 'No ThemeExtension found in context');
-    return result!.data;
+
+
+class ButtonThemes extends ThemeExtension<ButtonThemes> {
+  const ButtonThemes({
+    required this.error,
+    required this.success,
+  });
+
+  final ButtonStyle error;
+  final ButtonStyle success;
+  
+  @override
+  ThemeExtension<ButtonThemes> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<ButtonThemes> lerp(ThemeExtension<ButtonThemes>? other, double t) {
+    if (other is! ButtonThemes) {
+      return this;
+    }
+    return ButtonThemes(
+      error: error,
+      success: success,
+    );
+  }
+}
+
+
+
+class PaddingsTheme extends ThemeExtension<PaddingsTheme> {
+  const PaddingsTheme({
+    required this.medium,
+    required this.big,
+    required this.small,
+  });
+
+  final double medium;
+  final double small;
+  final double big;
+  
+  @override
+  ThemeExtension<PaddingsTheme> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<PaddingsTheme> lerp(ThemeExtension<PaddingsTheme>? other, double t) {
+    if (other is! PaddingsTheme) {
+      return this;
+    }
+    return PaddingsTheme(
+      medium: lerpDouble(medium, other.medium, t)!,
+      big: lerpDouble(big, other.big, t)!,
+      small: lerpDouble(small, other.small, t)!
+    );
+  }
+}
+
+
+
+class MarginTheme extends ThemeExtension<MarginTheme> {
+  const MarginTheme({
+    required this.normal
+  });
+
+  final double normal;
+
+  @override
+  ThemeExtension<MarginTheme> copyWith() {
+    throw UnimplementedError();
   }
 
   @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => true;
+  ThemeExtension<MarginTheme> lerp(ThemeExtension<MarginTheme>? other, double t) {
+    if (other is! MarginTheme) {
+      return this;
+    }
+    return MarginTheme(
+      normal: lerpDouble(normal, other.normal, t)!,
+    );
+  }
 
 }
+
+
+
+class RadiusesTheme extends ThemeExtension<RadiusesTheme> {
+  const RadiusesTheme({
+    required this.tiny,
+    required this.small,
+    required this.medium,
+    required this.big,
+  });
+
+  final BorderRadius tiny;
+  final BorderRadius small;
+  final BorderRadius medium;
+  final BorderRadius big;
+  
+  @override
+  ThemeExtension<RadiusesTheme> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<RadiusesTheme> lerp(ThemeExtension<RadiusesTheme>? other, double t) {
+    if (other is! RadiusesTheme) {
+      return this;
+    }
+    return RadiusesTheme(
+      tiny: BorderRadius.lerp(tiny, other.tiny, t)!,
+      small: BorderRadius.lerp(small, other.small, t)!,
+      medium: BorderRadius.lerp(medium, other.medium, t)!,
+      big: BorderRadius.lerp(big, other.big, t)!
+    );
+  }
+}
+
+
+
+class ComponentsTheme extends ThemeExtension<ComponentsTheme> {
+  const ComponentsTheme({
+    required this.dataGrid,
+    required this.tooltip
+  });
+
+  final OTooltipThemeData? tooltip;
+  final ODataGridTheme? dataGrid;
+  
+  @override
+  ThemeExtension<ComponentsTheme> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<ComponentsTheme> lerp(ThemeExtension<ComponentsTheme>? other, double t) {
+    return this;
+  }
+}
+
+
+
+class ConstraintsTheme extends ThemeExtension<ConstraintsTheme> {
+  const ConstraintsTheme({
+    required this.maxPageWidth,
+    required this.mobileScreenMax,
+    required this.snackbarMaxSize
+  });
+
+  final double mobileScreenMax;
+  final double snackbarMaxSize;
+  final double maxPageWidth;
+  
+  @override
+  ThemeExtension<ConstraintsTheme> copyWith() {
+    throw UnimplementedError();
+  }
+  
+  @override
+  ThemeExtension<ConstraintsTheme> lerp(ThemeExtension<ConstraintsTheme>? other, double t) {
+    return this;
+  }
+}
+
 
 
 class OTooltipThemeData {
@@ -91,3 +243,9 @@ class OTooltipThemeData {
   final TextStyle? style;
   final EdgeInsets? padding;
 }
+
+
+
+
+
+

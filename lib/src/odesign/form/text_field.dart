@@ -9,13 +9,15 @@ class OTextFormField extends StatelessWidget {
     required this.label,
     this.hint,
     required this.field,
-    this.size
+    this.size,
+    this.style,
   }) : super(key: key);
 
   final XTextField field;
   final Widget label;
   final String? hint;
   final double? size;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,13 @@ class OTextFormField extends StatelessWidget {
       errors: field.errors()?.map(Text.new).toList(),
       child: TextField(
         controller: field.controller,
+        style: style,
         decoration: InputDecoration(
-          hintText: hint
+          hintText: hint,
+          contentPadding: EdgeInsets.zero,
+          hintStyle: Theme.of(context).inputDecorationTheme.hintStyle?.copyWith(
+            fontSize: style?.fontSize
+          )
         ),
       )
     );

@@ -18,7 +18,7 @@ class OCardAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Theme.of(context).colorScheme.surface,
-      borderRadius: ThemeExtension.of(context).mediumBorderRadius,
+      borderRadius: Theme.of(context).radiuses.medium,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: onTap,

@@ -19,8 +19,8 @@ class OTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: ThemeExtension.of(context).paddingSmall,
-        vertical: ThemeExtension.of(context).paddingSmall
+        horizontal: Theme.of(context).paddings.small,
+        vertical: Theme.of(context).paddings.small
       ),
       child: Row(
         children: [
@@ -45,6 +45,30 @@ class OTile extends StatelessWidget {
           ]
         ],
       ),
+    );
+  }
+}
+
+
+
+class OTileBody extends StatelessWidget {
+  const OTileBody({
+    Key? key,
+    required this.title,
+    this.subtitle
+  }) : super(key: key);
+
+  final Widget title;
+  final Widget? subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        title,
+        if (subtitle != null)
+          subtitle!,
+      ],
     );
   }
 }

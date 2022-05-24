@@ -11,6 +11,7 @@ class ODialog extends StatelessWidget {
     this.noPadding = false,
     this.actions,
     this.scrollable = true,
+    this.bottomActions
   }) : super(key: key);
 
   final Widget? title;
@@ -18,16 +19,17 @@ class ODialog extends StatelessWidget {
   final bool noPadding;
   final List<Widget>? actions;
   final bool scrollable;
+  final List<Widget>? bottomActions;
 
   @override
   Widget build(BuildContext context) {
-    final padding = ThemeExtension.of(context).mediumComponentPadding;
+    final padding = Theme.of(context).paddings.medium;
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       scrollable: scrollable,
-      title: title != null 
+      title: title != null || actions != null 
         ? DefaultTextStyle.merge(
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
             child: Container(
               padding: EdgeInsets.only(
                 top: padding / 2,
@@ -43,12 +45,14 @@ class ODialog extends StatelessWidget {
                       child: CloseButton()
                     ),
                   ),
-                  Expanded(child: title!),
+                  Expanded(child: title ?? Container()),
                   if (actions != null)
                     ...actions!.map((action) => Padding(
                       padding: actions!.last == action 
                         ? EdgeInsets.zero 
-                        : EdgeInsets.only(right: ThemeExtension.of(context).paddingSmall),
+                        : EdgeInsets.only(
+                            right: Theme.of(context).paddings.small
+                          ),
                       child: action,
                     )).toList()
                 ],
@@ -60,37 +64,66 @@ class ODialog extends StatelessWidget {
       contentPadding: noPadding ? EdgeInsets.zero : EdgeInsets.all(padding).copyWith(top: 0),
       contentTextStyle: Theme.of(context).textTheme.bodyText1,
       content: content,
+      actions: bottomActions,
+      actionsAlignment: MainAxisAlignment.end,
+      
     );
   }
 }
 
 
 
+enum OConfirmationDialogStyle {
+  confirmation,
+  danger
+}
+
+
 Future<bool> showConfirmationDialog({
   required BuildContext context,
-  required Widget title,
+  Widget? title,
+  OConfirmationDialogStyle mode = OConfirmationDialogStyle.confirmation,
   required Widget content,
   required Widget okLabel,
   required Widget nokLabel,
 }) async {
+  ButtonStyle? confirmStyle;
+  ButtonStyle? cancelStyle;
+  Widget? confirmIcon;
+  Widget? cancelIcon;
+  switch (mode) {
+    case OConfirmationDialogStyle.confirmation:
+      confirmStyle = Theme.of(context).buttons.success;
+      cancelStyle = Theme.of(context).buttons.error;
+      confirmIcon = const Icon(Icons.check_circle_outline);
+      cancelIcon = const Icon(Icons.cancel_outlined);
+      break;
+    case OConfirmationDialogStyle.danger:
+      confirmStyle = Theme.of(context).buttons.error;
+      confirmIcon = const Icon(Icons.warning_amber_outlined);
+      cancelIcon = null;
+      break;
+  }
   bool? confirmation =  await showDialog<bool>(context: context, builder: (context) => ODialog(
     title: title,
     content: content,
-    actions: [
+    bottomActions: [
       OButton(
-        color: ThemeExtension.of(context).errorColor,
+        style: OButtonStyle.secondary,
+        buttonStyle: cancelStyle,
         onTap: () {
           Navigator.pop(context, false);
         }, 
-        icon: const Icon(Icons.cancel_outlined), 
+        icon: cancelIcon, 
         label: nokLabel
       ),
       OButton(
-        color: ThemeExtension.of(context).successColor,
+        style: OButtonStyle.primary,
+        buttonStyle: confirmStyle,        
         onTap: () {
           Navigator.pop(context, true);
         }, 
-        icon: const Icon(Icons.check_circle_outline), 
+        icon: confirmIcon, 
         label: okLabel
       ),
     ],

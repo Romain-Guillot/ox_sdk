@@ -203,15 +203,15 @@ class XFormStateHelper {
 
   void _handleChanges(XField field, dynamic value) {
     final fieldHasChanged = field.hasChanged();
-    final previousHasChanged = changes.contains(field);
-    if (fieldHasChanged != previousHasChanged) {
+    // final previousHasChanged = changes.contains(field);
+    // if (fieldHasChanged != previousHasChanged) {
       if (fieldHasChanged == true) {
         changes.add(field);
       } else {
         changes.remove(field);
       }
       notifyChangesListeners();
-    }
+    // }
     final newHasChanges = changes.isNotEmpty;
     if (hasChanges != newHasChanges) {
       hasChanges = newHasChanges;

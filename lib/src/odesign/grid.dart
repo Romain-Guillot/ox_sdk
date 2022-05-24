@@ -1,8 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:collection/collection.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 
 enum OColumnSortOrder {
@@ -243,7 +243,7 @@ class ODataGrid<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveTheme = ThemeExtension.of(context).dataGridTheme ?? theme;
+    final effectiveTheme = Theme.of(context).components.dataGrid ?? theme;
     Widget child = MultiSliver(
       children: <Widget>[
         if (headerBeahavior != OGridHeaderBehavior.hide)

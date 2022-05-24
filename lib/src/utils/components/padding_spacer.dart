@@ -23,10 +23,14 @@ class PaddingSpacer extends StatelessWidget {
   factory PaddingSpacer.big() => const PaddingSpacer(type: PaddingType.big);
 
   double getPaddingValue(BuildContext context) {
+    final paddings = Theme.of(context).paddings;
     switch (type) {
-      case PaddingType.normal: return ThemeExtension.of(context).padding;
-      case PaddingType.small: return ThemeExtension.of(context).paddingSmall;
-      case PaddingType.big: return ThemeExtension.of(context).paddingBig;
+      case PaddingType.normal: 
+        return paddings.medium;
+      case PaddingType.small: 
+        return paddings.small;
+      case PaddingType.big: 
+        return paddings.big;
  
     }
   }

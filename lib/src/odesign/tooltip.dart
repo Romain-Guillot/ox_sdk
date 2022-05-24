@@ -31,11 +31,11 @@ class _OTooltipState extends State<OTooltip> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ThemeExtension.of(context).tooltipTheme;
+    final theme = Theme.of(context).components.tooltip;
     return JustTheTooltip(
       backgroundColor: theme?.backgroundColor,
       content: Padding(
-        padding: theme?.padding ?? EdgeInsets.all(ThemeExtension.of(context).padding),
+        padding: theme?.padding ?? EdgeInsets.all(Theme.of(context).paddings.medium),
         child: DefaultTextStyle.merge(
           style: theme?.style,
           child: widget.tooltip ?? Container()

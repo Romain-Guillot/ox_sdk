@@ -51,7 +51,7 @@ class ODrawerState extends State<ODrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final padding = ThemeExtension.of(context).padding;
+    final padding = Theme.of(context).paddings.medium;
     return SafeArea(
       child: Container(
         key: GlobalKey(),
@@ -108,7 +108,7 @@ class ODrawerState extends State<ODrawer> {
                   if (widget.actions != null)
                     Padding(
                       padding: EdgeInsets.only(
-                        top: ThemeExtension.of(context).paddingBig,
+                        top: Theme.of(context).paddings.big,
                         left: padding,
                         right: padding
                       ),
@@ -117,7 +117,7 @@ class ODrawerState extends State<ODrawer> {
                           (action) => Padding(
                             padding: widget.actions?.last == action 
                               ? EdgeInsets.zero
-                              : EdgeInsets.only(bottom: ThemeExtension.of(context).paddingSmall),
+                              : EdgeInsets.only(bottom: Theme.of(context).paddings.small),
                             child: action,
                           )
                         ).toList()
@@ -142,7 +142,9 @@ class ODrawerState extends State<ODrawer> {
                         final isEndChild = index == (widget.destinations.length -1 );
                         return Padding(
                           padding: EdgeInsets.only(
-                            bottom: isEndChild ? 0.0 : ThemeExtension.of(context).paddingSmall
+                            bottom: isEndChild 
+                              ? 0.0 
+                              : (Theme.of(context).paddings.small)
                           ),
                           child: _DestinationItemWidget(
                             destination: destination,
@@ -183,12 +185,12 @@ class _DestinationItemWidget extends StatelessWidget {
     final theme = Theme.of(context).navigationRailTheme;
     return Material(
       color: selected ? theme.indicatorColor : Colors.transparent,
-      borderRadius: ThemeExtension.of(context).smallBorderRadius,
+      borderRadius: Theme.of(context).radiuses.small,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(ThemeExtension.of(context).smallComponentPadding),
+          padding: EdgeInsets.all(Theme.of(context).paddings.small),
           child: Row(
             children: [
               IconTheme.merge(

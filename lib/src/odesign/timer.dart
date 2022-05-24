@@ -36,8 +36,9 @@ class TimerState extends ChangeNotifier {
 
 class TimerScope extends StatelessWidget {
   const TimerScope({
+    Key? key,
     required this.child,
-  });
+  }) : super(key: key);
 
   final Widget child;
 
@@ -46,7 +47,7 @@ class TimerScope extends StatelessWidget {
     return child;
   }
 
-  static Map<Key, TimerState> _states = {};
+  static final Map<Key, TimerState> _states = {};
   static TimerState of(Key? key) {
     if (key == null) {
       return TimerState();

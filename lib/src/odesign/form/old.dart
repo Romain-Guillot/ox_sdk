@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
-import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
 
 class DateTimeFormField extends FormField<DateTime> {
@@ -103,7 +102,9 @@ class ColorPickerFormField extends FormField<Color> {
             ),
           ));
         },
-        icon: CircleAvatar(backgroundColor: state.value??ThemeExtension.of(context).backgroundVariant)
+        icon: CircleAvatar(
+          backgroundColor: state.value ?? Theme.of(context).colorScheme.surfaceVariant
+        )
       );
     }
   );

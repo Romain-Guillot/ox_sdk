@@ -10,7 +10,9 @@ class DraggableIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: ThemeExtension.of(context).paddingSmall),
+      padding: EdgeInsets.only(
+        top: Theme.of(context).paddings.small
+      ),
       child: Center(
         child: Container(
           width: 40,

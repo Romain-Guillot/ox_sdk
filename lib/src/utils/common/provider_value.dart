@@ -117,7 +117,9 @@ class DefaultLoadingWidget extends StatelessWidget {
           DefaultTextStyle.merge(
             style: Theme.of(context).textTheme.bodyText1,
             child: Padding(
-              padding: EdgeInsets.only(left: ThemeExtension.of(context).padding),
+              padding: EdgeInsets.only(
+                left: Theme.of(context).paddings.medium
+              ),
               child: label
             ),
           )

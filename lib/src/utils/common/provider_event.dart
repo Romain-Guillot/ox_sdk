@@ -35,6 +35,6 @@ class Event {
   const Event.error(dynamic e, [StackTrace? s]) : this(type: EventType.error, error: e, stackTrace: s);
 
   final EventType type;
-  final dynamic? error;
+  final dynamic error;
   final StackTrace? stackTrace;
 }

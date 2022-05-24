@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
@@ -20,9 +19,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>  showSuccessSnackbar({
     behavior: SnackBarBehavior.floating,
     action: action,
     animation: animation,
-    backgroundColor: ThemeExtension.of(context).successColor,
+    backgroundColor: Theme.of(context).colors.success,
     content: DefaultTextStyle.merge(
-      style: TextStyle(color: ThemeExtension.of(context).onSuccessColor),
+      style: TextStyle(color: Theme.of(context).colors.onSuccess),
       child: content
     ),
   ));
@@ -42,9 +41,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackbar({
     behavior: SnackBarBehavior.floating,
     action: action,
     animation: animation,
-    backgroundColor: ThemeExtension.of(context).errorColor,
+    backgroundColor: Theme.of(context).colors.error,
     content: DefaultTextStyle.merge(
-      style: TextStyle(color: ThemeExtension.of(context).onErrorColor),
+      style: TextStyle(color: Theme.of(context).colors.onError),
       child: content
     ),
   ));

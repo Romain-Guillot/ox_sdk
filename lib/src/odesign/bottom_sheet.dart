@@ -28,7 +28,7 @@ class _ODraggableSheetState extends State<ODraggableSheet> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         headerSize = headerKey.currentContext?.size;
       });
@@ -51,8 +51,9 @@ class _ODraggableSheetState extends State<ODraggableSheet> {
             builder: (context, scrollController) {
               return Material(
                 shape: RoundedRectangleBorder(
-                  borderRadius: ThemeExtension.of(context).bigBorderRadius.copyWith(
-                    bottomRight: Radius.zero, bottomLeft: Radius.zero
+                  borderRadius: Theme.of(context).radiuses.big.copyWith(
+                    bottomRight: Radius.zero, 
+                    bottomLeft: Radius.zero
                   )
                 ),
                 color: Theme.of(context).colorScheme.surface,

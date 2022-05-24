@@ -16,20 +16,25 @@ class OBottomActionsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: ThemeExtension.of(context).pageMargin.copyWith(top: 5, bottom: 5),
+      padding: EdgeInsets.symmetric(
+        horizontal: Theme.of(context).margins.normal
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          top: BorderSide(color: ThemeExtension.of(context).backgroundVariant, width: 1),
+          top: BorderSide(
+            color: Theme.of(context).colorScheme.surface, 
+            width: 1
+          ),
         )
       ),
       child: Row(
         children: <Widget>[
-          left??Container(),
+          left ?? Container(),
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,
-              child: right??Container()
+              child: right ?? Container()
             )
           )
         ]
