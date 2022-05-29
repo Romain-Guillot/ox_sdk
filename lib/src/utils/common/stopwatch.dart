@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -28,7 +29,7 @@ class XStopWatchState {
   });
 
   final XStopWatchStatus status;
-  final Duration duration;
+  final Duration? duration;
 }
 
 
@@ -64,9 +65,9 @@ class XStopWatch {
     ));
   }
   
-  final elapsed = BehaviorSubject<Duration>();
-  Duration __elapsed = const Duration();
-  set _elapsed(Duration value) {
+  final elapsed = BehaviorSubject<Duration?>();
+  Duration? __elapsed;
+  set _elapsed(Duration? value) {
     __elapsed = value;
     elapsed.add(__elapsed);
     state.add(XStopWatchState(
@@ -91,15 +92,10 @@ class XStopWatch {
         );
         break;
       case XStopWatchMode.timer:
-        final remainingTime = _preset.inMilliseconds - elapsedInMs;
-        if (remainingTime <= 0) {
-          stop();
-        } else {
-          _elapsed = Duration(
-            milliseconds: remainingTime
-          );
-        }
-
+        final remainingTime = max(_preset.inMilliseconds - elapsedInMs, 0);
+        _elapsed = Duration(
+          milliseconds: remainingTime
+        );
         break;
       default:
     }
@@ -107,8 +103,8 @@ class XStopWatch {
 
 
   start({ Duration preset = const Duration() }) {
-    _preset = preset;
     stop();
+    _preset = preset;
     _status = XStopWatchStatus.running;
     _startTime = DateTime.now();
     _handle();
@@ -125,7 +121,7 @@ class XStopWatch {
   }
 
 
-  Duration pause() {
+  Duration? pause() {
     _status = XStopWatchStatus.paused;
     _pauseTime = DateTime.now();
     return __elapsed;
@@ -134,12 +130,13 @@ class XStopWatch {
 
   stop() {
     _status = XStopWatchStatus.stopped;
-    _elapsed = const Duration();
+    _elapsed = null;
     _pauseTime = null;
     _addedTime = const Duration();
     _pausedTotal = const Duration();
     _startTime = null;
     _preset = const Duration();
+    _timer?.cancel();
   }
 
 
@@ -173,7 +170,7 @@ class OStopWatchBuilder extends StatelessWidget {
   }) : super(key: key);
 
   final XStopWatch stopwatch;
-  final Widget Function(BuildContext context, XStopWatchStatus state, Duration value) builder;
+  final Widget Function(BuildContext context, XStopWatchStatus state, Duration? value) builder;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +181,7 @@ class OStopWatchBuilder extends StatelessWidget {
         return builder(
           context,
           value?.status ?? XStopWatchStatus.stopped,
-          value?.duration ?? const Duration()
+          value?.duration
         );
       }
     );

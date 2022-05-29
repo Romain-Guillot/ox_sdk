@@ -8,6 +8,7 @@ import 'package:ox_sdk/src/utils/components/adaptative_layout_builder.dart';
 
 const double kBreakpointLarge = 1024;
 const double kFABMarginBottom = 64;
+const double kFABMargin = 64;
 
 class ThemeBuilder extends StatelessWidget {
   const ThemeBuilder({
@@ -99,84 +100,84 @@ ThemeData theme(LayoutDensity density) {
     onInfo: Colors.white,
     supportings: {
     SupportingColors.blue: SupportingColorData(
-        primary: Color(0xFF6788FF),
+        primary: Color(0xFF6B8AF6),
         onPrimary: Colors.white,
-        variant: Color(0xFF182D86),
+        variant: Color(0xFF374FB6),
         onVariant: Colors.white,
-        container: Color(0xFFEAEEFF),
-        onContainer: Colors.black
+        container: Color(0xFF6B8AF6),
+        onContainer: Colors.white
       ),
     SupportingColors.green: SupportingColorData(
         primary: Color(0xFF2DD470),
         onPrimary: Colors.white,
-        variant: Color(0xFF107A3B),
+        variant: Color(0xFF23A356),
         onVariant: Colors.white,
-        container: Color(0xFFD6F4E2),
-        onContainer: Colors.black
+        container: Color(0xFF2DD470),
+        onContainer: Colors.white
       ),
     SupportingColors.indigo: SupportingColorData(
         primary: Color(0xFF8044FF),
         onPrimary: Colors.white,
-        variant: Color(0xFF260F81),
+        variant: Color(0xFF3A229C),
         onVariant: Colors.white,
-        container: Color(0xFFEBEBFF),
-        onContainer: Colors.black
+        container: Color(0xFF8044FF),
+        onContainer: Colors.white
       ),
       SupportingColors.orange: SupportingColorData(
         primary: Color(0xFFFF9567),
         onPrimary: Colors.white,
-        variant: Color(0xFF883613),
+        variant: Color(0xFFB95B33),
         onVariant: Colors.white,
-        container: Color(0xFFFCEEEA),
-        onContainer: Colors.black
+        container: Color(0xFFFF9567),
+        onContainer: Colors.white
       ),
     SupportingColors.pink: SupportingColorData(
         primary: Color(0xFFFF67B0),
         onPrimary: Colors.white,
-        variant: Color(0xFF86154B),
+        variant: Color(0xFFC5397C),
         onVariant: Colors.white,
-        container: Color(0xFFFFEBF2),
-        onContainer: Colors.black
+        container: Color(0xFFFF67B0),
+        onContainer: Colors.white
       ),
     SupportingColors.purple: SupportingColorData(
         primary: Color(0xFFBB67FF),
         onPrimary: Colors.white,
-        variant: Color(0xFF531586),
+        variant: Color(0xFF752DAF),
         onVariant: Colors.white,
-        container: Color(0xFFF6EBFF),
-        onContainer: Colors.black
+        container: Color(0xFFBB67FF),
+        onContainer: Colors.white
       ),
     SupportingColors.red: SupportingColorData(
-        primary: Color(0xFFFF6767),
+        primary: Color(0xFFFC5B5B),
         onPrimary: Colors.white,
-        variant: Color(0xFF861515),
+        variant: Color(0xFFB22525),
         onVariant: Colors.white,
-        container: Color(0xFFFFEBEB),
-        onContainer: Colors.black
+        container: Color(0xFFFC5B5B),
+        onContainer: Colors.white
       ),
     SupportingColors.yellow: SupportingColorData(
-        primary: const Color(0xFFE1DB51),
+        primary: Color(0xFFD4CE30),
         onPrimary: Colors.white,
-        variant: Color(0xFF75710A),
+        variant: Color(0xFFA59F1B),
         onVariant: Colors.white,
-        container: Color(0xFFFAF9DF),
-        onContainer: Colors.black
+        container: Color(0xFFD4CE30),
+        onContainer: Colors.white
       ),
     SupportingColors.turqoise: SupportingColorData(
-        primary: Color(0xFF51D9E1),
+        primary: Color(0xFF3DD5DE),
         onPrimary: Colors.white,
-        variant: Color(0xFF0A6E75),
+        variant: Color(0xFF2C979E),
         onVariant: Colors.white,
-        container: Color(0xFFDFF6F9),
-        onContainer: Colors.black
+        container: Color(0xFF3DD5DE),
+        onContainer: Colors.white
       ),
     SupportingColors.eucalyptus: SupportingColorData(
-        primary: Color(0xFF51E1B6),
+        primary: Color(0xFF48DDB0),
         onPrimary: Colors.white,
-        variant: Color(0xFF0A755B),
+        variant: Color(0xFF289B80),
         onVariant: Colors.white,
-        container: Color(0xFFDFF9F1),
-        onContainer: Colors.black
+        container: Color(0xFF48DDB0),
+        onContainer: Colors.white
       )
     }
   );
@@ -303,7 +304,11 @@ ThemeData theme(LayoutDensity density) {
       labelLarge: textThemeFontSizes.labelLarge?.copyWith(
         fontWeight: FontWeight.bold
       )
+    ).apply(
+      bodyColor: Colors.black,
+      displayColor: Colors.black
     ),
+
     colorScheme: const ColorScheme(
       primary: Colors.black,
       onPrimary: Colors.white,

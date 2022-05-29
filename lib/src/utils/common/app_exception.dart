@@ -6,7 +6,7 @@ class AppException implements Exception  {
   });
 
   final int code;
-  final Exception? innerException;
+  final dynamic innerException;
   final StackTrace? innerStackTrace;
 
   @override
@@ -32,7 +32,7 @@ class ApiException implements Exception {
   });
 
   final int code;
-  final Exception? innerException;
+  final dynamic innerException;
   final StackTrace? innerStackTrace;
 
   @override

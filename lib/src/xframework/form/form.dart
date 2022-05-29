@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:ox_sdk/ox_sdk.dart';
 
 abstract class XField<T> {
   XField(T? initialValue) 
@@ -139,6 +140,139 @@ class XRadioListField<T> extends XField<T> {
   void removeListener(ValueChanged<T?> callback) {
     _listeners.removeWhere((element) => element == callback);
   }
+}
+
+
+class XDurationField extends XField<Duration> {
+  XDurationField({
+    Duration? initialValue,
+    this.validators,
+  }) : hoursController = TextEditingController(text: initialValue?.hours.toString()),
+       minutesController = TextEditingController(text: initialValue?.minutes.toString()),
+       secondsController = TextEditingController(text: initialValue?.seconds.toString()),
+       super(initialValue)
+  {
+    hoursController.addListener(notifyListeners);
+    minutesController.addListener(notifyListeners);
+    secondsController.addListener(notifyListeners);
+  }
+
+
+  @override
+  final List<FormFieldValidator<Duration>>? validators;
+
+  final List<ValueChanged<Duration?>> _listeners = [];
+
+  final TextEditingController hoursController;
+  final TextEditingController minutesController;
+  final TextEditingController secondsController;
+
+
+  notifyListeners() {
+    for (final listener in _listeners) {
+      listener.call(value);
+    }
+  }
+  
+
+  @override
+  bool hasChanged() {
+    return value != initialValue;
+  }
+
+
+  @override
+  void addListener(ValueChanged<Duration?> callback) {
+    _listeners.add(callback);
+  }
+
+
+  @override
+  void removeListener(ValueChanged<Duration?> callback) {
+    _listeners.removeWhere((element) => element == callback);
+  }
+
+  
+  @override
+  void setValue(Duration? newValue) {
+    hoursController.text = newValue?.hours.toString() ?? '';
+    minutesController.text = newValue?.minutes.toString() ?? '';
+    secondsController.text = newValue?.seconds.toString() ?? '';
+    notifyListeners();
+  }
+  
+
+  
+  @override
+  Duration? get value => Duration(
+    hours: int.tryParse(hoursController.text) ?? 0,
+    seconds: int.tryParse(secondsController.text) ?? 0,
+    minutes: int.tryParse(minutesController.text) ?? 0
+  );
+}
+
+
+
+class XDistanceField extends XField<DistanceFieldValue> {
+  XDistanceField({
+    DistanceFieldValue? initialValue,
+    this.validators,
+  }) : valueController = TextEditingController(text: initialValue?.value?.toString()),
+       unit = initialValue?.unit,
+       super(initialValue)
+  {
+    valueController.addListener(() {
+      notifyListeners();
+    });
+  }
+
+
+  final List<ValueChanged<DistanceFieldValue?>> _listeners = [];
+  final TextEditingController valueController;
+  DistanceUnit? unit;
+
+  @override
+  final List<FormFieldValidator<DistanceFieldValue>>? validators;
+
+
+  notifyListeners() {
+    for (final listener in _listeners) {
+      listener.call(value);
+    }
+  }
+
+
+  @override
+  void setValue(DistanceFieldValue? newValue) {
+    valueController.value = TextEditingValue(text: newValue?.value?.toString() ?? '');
+    unit = newValue?.unit;
+    notifyListeners();
+  }
+
+
+  @override
+  bool hasChanged() {
+    return value != initialValue;
+  }
+
+
+  @override
+  void addListener(ValueChanged<DistanceFieldValue?> callback) {
+    _listeners.add(callback);
+  }
+
+
+  @override
+  void removeListener(ValueChanged<DistanceFieldValue?> callback) {
+    _listeners.removeWhere((element) => element == callback);
+  }
+
+
+  @override
+  DistanceFieldValue get value => DistanceFieldValue(
+    value: double.tryParse(valueController.text),
+    unit: unit
+  );
 }
 
 

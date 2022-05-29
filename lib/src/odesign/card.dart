@@ -5,7 +5,8 @@ import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
 enum OCardType {
   main,
-  component
+  component,
+  expanded,
 }
 
 
@@ -70,7 +71,9 @@ class OCard extends StatelessWidget {
     this.supporting,
     this.centerTitle = false,
     this.density = OCardDensity.medium,
-    this.supportingStyle = OCardStyle.normal
+    this.supportingStyle = OCardStyle.normal,
+    this.clip = Clip.antiAliasWithSaveLayer,
+    this.contentPadding
   }) : super(key: key);
 
   final Widget? title;
@@ -87,6 +90,8 @@ class OCard extends StatelessWidget {
   final OCardStyle supportingStyle;
   final bool centerTitle;
   final OCardDensity density;
+  final Clip clip;
+  final EdgeInsets? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -102,12 +107,21 @@ class OCard extends StatelessWidget {
       padding = Theme.of(context).paddings.big;
         break;
     }
-    final radius = type == OCardType.component
-      ? Theme.of(context).radiuses.medium
-      : BorderRadius.only(
-        topLeft: Theme.of(context).radiuses.medium.topLeft,
-        topRight: Theme.of(context).radiuses.medium.topRight
-      ) ;
+    BorderRadius radius;
+    switch (type) {
+      case OCardType.component:
+        radius = Theme.of(context).radiuses.medium;
+        break;
+      case OCardType.main:
+        radius = BorderRadius.only(
+          topLeft: Theme.of(context).radiuses.medium.topLeft,
+          topRight: Theme.of(context).radiuses.medium.topRight
+        );
+        break;
+      case OCardType.expanded:
+        radius = BorderRadius.zero;
+        break;
+    }
     Widget _child = child;
     if (expand) {
       _child = Expanded(
@@ -117,7 +131,7 @@ class OCard extends StatelessWidget {
     if (hasContentPadding) {
       _child = Padding(
         padding: hasContentPadding
-          ? EdgeInsets.all(padding).copyWith(top: title == null ? null : 0)
+          ? (contentPadding ?? EdgeInsets.all(padding)).copyWith(top: title == null ? null : 0)
           : EdgeInsets.zero,
         child: _child,
       );
@@ -141,8 +155,8 @@ class OCard extends StatelessWidget {
           cardColor = supportingColors.container;
           foregroundColor = supportingColors.onContainer;
           buttonStyle = TextButton.styleFrom(
-            primary: supportingColors.onPrimary,
-            backgroundColor: supportingColors.primary
+            primary: supportingColors.container,
+            backgroundColor: supportingColors.onContainer
           ).merge(Theme.of(context).textButtonTheme.style);
           break;
       }
@@ -155,7 +169,7 @@ class OCard extends StatelessWidget {
       color: cardColor,
       elevation: elevation ?? 0,
       borderRadius: radius,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
+      clipBehavior: clip,
       child: Theme(
         data: Theme.of(context).copyWith(
           textTheme: Theme.of(context).textTheme.apply(
@@ -178,38 +192,44 @@ class OCard extends StatelessWidget {
                   children: [
                     if (title != null || actions != null)
                       Padding(
-                        padding: EdgeInsets.all(padding),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: padding
+                        ),
                         child: Row(
                           children: [
-                            Expanded(
-                              child: title != null 
-                                ? DefaultTextStyle.merge(
+                          Expanded(
+                            child: title != null 
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: padding
+                                  ),
+                                  child: DefaultTextStyle.merge(
                                     style: Theme.of(context).textTheme.titleMedium,
                                     textAlign: centerTitle ? TextAlign.center : TextAlign.left,
                                     child: Align(
                                       alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
                                       child: title!
                                     )
-                                  ) 
-                                : Container()
-                            ),
-                            if (actions != null)
-                              ...actions!.map((action) {
-                                final isLastAction = actions!.last == action;
-                                return Padding(
-                                  padding: EdgeInsets.only(
-                                    right: !isLastAction 
-                                      ? (Theme.of(context).paddings.small)
-                                      : 0
-                                  ),
-                                  child: action,
-                                );
-                              })
-                          ],
-                        ),
+                                  )
+                                )
+                              : Container()
+                          ),
+                          if (actions != null)
+                            ...actions!.map((action) {
+                              final isLastAction = actions!.last == action;
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  right: !isLastAction 
+                                    ? (Theme.of(context).paddings.small)
+                                    : 0
+                                ),
+                                child: action,
+                              );
+                            })
+                        ],
+                                          ),
                       ),
                     _child
-                    
                   ],
                 ),
               ),

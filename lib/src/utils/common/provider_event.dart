@@ -1,19 +1,46 @@
 import 'package:flutter/foundation.dart';
 
 
+
 class ProviderEvent<T> {
   ProviderEvent();
-  ProviderEvent.fromEvent(this.event);
-  T? event;
+  ProviderEvent.fromEvent(this.value);
+  T? value;
+  final List _consumers = <Object>[];
 
-  void addEvent(T event) => this.event = event;
-  bool get hasEvent => event != null;
-  T? consumeEvent() {
-    final T? result = event;
-    event = null;
+  void add(T value) {
+    _consumers.clear();
+    this.value = value;
+  }
+
+  void remove() {
+    _consumers.clear();
+    value = null;
+  }
+
+  bool hasValue({Object? originator, bool consume = false}) {
+    final bool result = value != null && (originator == null || !_consumers.contains(originator));
+    if (result && consume) {
+      this.consume(originator: originator);
+    }
+    return result;
+  }
+
+  T? consume({Object? originator}) {
+    if (value == null || _consumers.contains(originator)) {
+      return null;
+    }
+    final T? result = value;
+    if (originator == null) {
+      value = null;
+    } else {
+      _consumers.add(originator);
+    }
     return result;
   }
 }
+
+
 
 
 

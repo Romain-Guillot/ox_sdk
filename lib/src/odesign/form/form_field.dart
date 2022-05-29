@@ -13,24 +13,28 @@ class OFormField extends StatelessWidget {
   const OFormField({ 
     Key? key,
     this.label,
+    this.labelStyle,
     required this.child,
     this.fieldSize,
     this.errors,
-    this.layout
+    this.layout,
+    this.expandField = false
   }) : super(key: key);
 
   final Widget? label;
+  final TextStyle? labelStyle;
   final double? fieldSize;
   final Widget child;
   final List<Widget>? errors;
   final LayoutDensity? layout;
+  final bool expandField;
 
   @override
   Widget build(BuildContext context) {
     Widget? effectiveLabel;
     if (label != null) {
       effectiveLabel = DefaultTextStyle.merge(
-        style: Theme.of(context).inputDecorationTheme.labelStyle,
+        style: labelStyle ?? Theme.of(context).inputDecorationTheme.labelStyle,
         child: label!
       );
     }
@@ -75,9 +79,11 @@ class OFormField extends StatelessWidget {
         borderRadius: Theme.of(context).radiuses.small,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: Theme.of(context).paddings.medium
-          ),
+          padding: expandField 
+            ? EdgeInsets.zero 
+            : EdgeInsets.symmetric(
+              horizontal: Theme.of(context).paddings.medium
+            ),
           child: AdaptativeLayoutBuilder(
             forceDensity: layout,
             narrow: Padding(
