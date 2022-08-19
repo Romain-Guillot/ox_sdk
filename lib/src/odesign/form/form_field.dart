@@ -106,7 +106,7 @@ class OFormField extends StatelessWidget {
                 if (effectiveLabel != null)
                   effectiveLabel, 
                 const PaddingSpacer(),
-                effectiveField
+                Expanded(child: effectiveField)
               ]
             ),
           ),

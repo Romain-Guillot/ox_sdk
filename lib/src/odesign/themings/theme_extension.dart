@@ -42,8 +42,28 @@ class ColorsTheme extends ThemeExtension<ColorsTheme> {
   final Map<SupportingColors, SupportingColorData> supportings;
   
   @override
-  ThemeExtension<ColorsTheme> copyWith() {
-    throw UnimplementedError();
+  ThemeExtension<ColorsTheme> copyWith({
+    Color? error,
+    Color? onError,
+    Color? info,
+    Color? onInfo,
+    Color? success,
+    Color? onSuccess,
+    Color? warning,
+    Color? onWarning,
+    Map<SupportingColors, SupportingColorData>? supportings
+  }) {
+    return ColorsTheme(
+      error: error ?? this.error, 
+      onError: onError ?? this.onError, 
+      info: info ?? this.info, 
+      onInfo: onInfo ?? this.onInfo, 
+      success: success ?? this.success, 
+      onSuccess: onSuccess ?? this.onSuccess, 
+      onWarning: onWarning ?? this.onWarning, 
+      warning: warning ?? this.warning, 
+      supportings: supportings ?? this.supportings
+    );
   }
   
   @override
@@ -97,12 +117,14 @@ class ButtonThemes extends ThemeExtension<ButtonThemes> {
 
 class PaddingsTheme extends ThemeExtension<PaddingsTheme> {
   const PaddingsTheme({
+    required this.tiny,
     required this.medium,
     required this.big,
     required this.small,
   });
 
   final double medium;
+  final double tiny;
   final double small;
   final double big;
   
@@ -119,7 +141,8 @@ class PaddingsTheme extends ThemeExtension<PaddingsTheme> {
     return PaddingsTheme(
       medium: lerpDouble(medium, other.medium, t)!,
       big: lerpDouble(big, other.big, t)!,
-      small: lerpDouble(small, other.small, t)!
+      small: lerpDouble(small, other.small, t)!,
+      tiny: lerpDouble(tiny, other.tiny, t)!
     );
   }
 }
@@ -247,5 +270,17 @@ class OTooltipThemeData {
 
 
 
-
-
+class OThemeExtensions {
+  static List<ThemeExtension> extensions({
+    required ButtonThemes buttons,
+    required ColorsTheme colors,
+    required PaddingsTheme paddings,
+    required MarginTheme margins,
+    required ComponentsTheme components,
+    required ConstraintsTheme constraints,
+  }) {
+    return [
+      buttons, colors, paddings, margins, components, constraints
+    ];
+  }
+}

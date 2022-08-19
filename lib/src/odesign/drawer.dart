@@ -6,10 +6,12 @@ import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 class OMenuDestination {
   const OMenuDestination({
     required this.icon,
+    required this.selectedIcon,
     required this.label
   });
 
   final Widget icon;
+  final Widget? selectedIcon;
   final Widget label;
 }
 
@@ -24,6 +26,7 @@ class ODrawer extends StatefulWidget {
     this.actions,
     required this.destinations,
     required this.onDestinationChange,
+    this.bottom
   }) : super(key: key);
 
   final Widget title;
@@ -31,6 +34,7 @@ class ODrawer extends StatefulWidget {
   final int selectedIndex;
   final List<OMenuDestination> destinations;
   final OnDestinationChange onDestinationChange;
+  final Widget? bottom;
 
   @override
   State<ODrawer> createState() => ODrawerState();
@@ -58,7 +62,7 @@ class ODrawerState extends State<ODrawer> {
         padding: EdgeInsets.only(
           bottom: padding
         ),
-        width: opened ? 260 : null,
+        width: opened ? 250 : null,
         height: double.maxFinite,
         child: Stack(
           children: [
@@ -158,7 +162,19 @@ class ODrawerState extends State<ODrawer> {
                   )
                 ),
               )
-            )
+            ),
+            if (widget.bottom != null)
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: padding
+                  ),
+                  child: widget.bottom!
+                )
+              )
           ]
         ),
       ),
@@ -197,7 +213,9 @@ class _DestinationItemWidget extends StatelessWidget {
                 data: const IconThemeData().merge(selected 
                   ? theme.selectedIconTheme
                   : theme.unselectedIconTheme),
-                child: destination.icon
+                child: selected 
+                  ? (destination.selectedIcon ?? destination.icon)
+                  : destination.icon
               ),
               if (wide)...[
                 const PaddingSpacer(),

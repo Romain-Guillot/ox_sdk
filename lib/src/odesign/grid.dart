@@ -76,14 +76,14 @@ class OGridHeaderStyle {
 
 class GridRowStyle {
   const GridRowStyle({
-    this.padding = EdgeInsets.zero,
+    required this.padding,
     this.decoration,
     this.minHeight,
   });
 
-  final EdgeInsets padding;
+  final EdgeInsets Function(VisualDensity density) padding;
   final Decoration? decoration;
-  final double? minHeight;
+  final double Function(VisualDensity density)? minHeight;
 }
 
 
@@ -101,9 +101,11 @@ class _Header<T> extends StatefulWidget {
   const _Header({ 
     Key? key,
     required this.theme,
-    required this.columns
+    required this.columns,
+    required this.density
   }) : super(key: key);
 
+  final VisualDensity density;
   final ODataGridTheme? theme;
   final List<OGridColumn<T>> columns;
 
@@ -195,7 +197,7 @@ class __HeaderState<T> extends State<_Header<T>> {
     header = Container(
       padding: EdgeInsets.symmetric(
         vertical: theme?.headerStyle?.verticalSpacing??0.0,
-        horizontal: (theme?.rowStyle?.padding.horizontal??0) / 2
+        horizontal: (theme?.rowStyle?.padding(widget.density).horizontal ?? 0) / 2
       ),
       child: header,
     );
@@ -205,7 +207,7 @@ class __HeaderState<T> extends State<_Header<T>> {
       header = Container(
         decoration: theme?.headerStyle?.decoration,
         child: Material(
-          type: MaterialType.transparency,
+          color: Theme.of(context).colorScheme.surface,
           child: header
         ),
       );
@@ -229,7 +231,8 @@ class ODataGrid<T> extends StatelessWidget {
     this.onClick,
     this.headerBeahavior = OGridHeaderBehavior.fixed,
     this.primary = true,
-    this.scrollPhysics
+    this.scrollPhysics,
+    this.density = VisualDensity.standard
   }) : super(key: key);
 
   final List<OGridColumn<T>> columns;
@@ -239,7 +242,7 @@ class ODataGrid<T> extends StatelessWidget {
   final OGridHeaderBehavior headerBeahavior;
   final bool primary;
   final ScrollPhysics? scrollPhysics;
-
+  final VisualDensity density;
 
   @override
   Widget build(BuildContext context) {
@@ -251,6 +254,7 @@ class ODataGrid<T> extends StatelessWidget {
             child: _Header(
               theme: effectiveTheme,
               columns: columns,
+              density: density,
             )
           ),
         SliverList(
@@ -260,11 +264,11 @@ class ODataGrid<T> extends StatelessWidget {
               Widget child = Container(
                 decoration: effectiveTheme?.rowStyle?.decoration,
                 constraints: BoxConstraints(
-                  minHeight: effectiveTheme?.rowStyle?.minHeight ?? 0.0
+                  minHeight: effectiveTheme?.rowStyle?.minHeight?.call(density) ?? 0.0
                 ),
-                padding: effectiveTheme?.rowStyle?.padding ?? EdgeInsets.zero,
-                child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.bodyText1!,
+                padding: effectiveTheme?.rowStyle?.padding.call(density) ?? EdgeInsets.zero,
+                child: DefaultTextStyle.merge(
+                  style: Theme.of(context).textTheme.bodySmall,
                   child: Row(
                     children: columns.map((OGridColumn<T> column) {
                       final isFixed = column.width != null;

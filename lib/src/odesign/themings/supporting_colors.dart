@@ -10,7 +10,8 @@ enum SupportingColors {
   pink,
   indigo,
   turqoise,
-  eucalyptus
+  eucalyptus,
+  sand
 }
 
 

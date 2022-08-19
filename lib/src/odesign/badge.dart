@@ -5,7 +5,8 @@ import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
 enum OBadgeShape {
   circle,
-  square
+  square,
+  none
 }
 
 
@@ -14,6 +15,21 @@ enum OBadgeStyle {
   filled,
 }
 
+enum OBadgeDensity {
+  normal,
+  compact
+}
+
+extension on OBadgeDensity {
+  EdgeInsets padding(BuildContext context) {
+    switch (this) {
+      case OBadgeDensity.compact:
+        return EdgeInsets.all(Theme.of(context).paddings.tiny);
+      case OBadgeDensity.normal: 
+        return EdgeInsets.all(Theme.of(context).paddings.small);
+    }
+  }
+}
 
 class OBadge extends StatelessWidget {
   const OBadge({ 
@@ -27,7 +43,8 @@ class OBadge extends StatelessWidget {
     this.selected = false,
     this.padding,
     this.trailing,
-    this.leading
+    this.leading,
+    this.density = OBadgeDensity.normal
   }) : super(key: key);
 
   final Color? color;
@@ -40,6 +57,7 @@ class OBadge extends StatelessWidget {
   final EdgeInsets? padding;
   final Widget? trailing;
   final Widget? leading;
+  final OBadgeDensity density;
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +70,13 @@ class OBadge extends StatelessWidget {
         backgroundColor = selected ? color : variant;
         foregroundColor = selected ? variant : color;
         iconColor = foregroundColor;
-        effectivePadding = padding ?? EdgeInsets.all(Theme.of(context).paddings.small);
+        effectivePadding = padding ?? density.padding(context);
         break;
       case OBadgeStyle.flat:
         backgroundColor = selected ? color : Colors.transparent;
         foregroundColor = selected ? variant : null;
         iconColor = selected ? variant : color;
-        effectivePadding = padding ?? EdgeInsets.symmetric(
-          vertical: Theme.of(context).paddings.small
-        );
+        effectivePadding = padding ?? density.padding(context);
         break;
     }
     final radius = Theme.of(context).radiuses.small;
@@ -80,9 +96,9 @@ class OBadge extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (leading != null)
-                  leading!,
-                if (leading == null && iconColor != null)
+                if (leading != null)...[
+                  leading!, PaddingSpacer.small()],
+                if (shape != OBadgeShape.none && leading == null && iconColor != null)...[
                   Container(
                     constraints: BoxConstraints(
                       maxHeight: label == null ? 20 : 12,
@@ -96,8 +112,8 @@ class OBadge extends StatelessWidget {
                     ),
                     child: const SizedBox.expand(),
                   ),
-                if (iconColor != null && label != null)
                   PaddingSpacer.small(),
+                ],
                 if (label != null)
                   DefaultTextStyle.merge(
                     style: TextStyle(

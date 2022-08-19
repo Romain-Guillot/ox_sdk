@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ox_sdk/ox_sdk.dart';
+import 'package:ox_sdk/ox_sdk.dart' hide TextDirection;
 import 'package:ox_sdk/src/odesign/drawer.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
@@ -56,6 +56,7 @@ class OButton<T> extends StatefulWidget {
     this.mainSize = MainAxisSize.min,
     this.isFloating = false,
     this.buttonStyle,
+    this.heroTag,
   }) : super(key: key);
 
   final Widget? label;
@@ -69,6 +70,7 @@ class OButton<T> extends StatefulWidget {
   final OButtonLayout layout;
   final bool isFloating;
   final ButtonStyle? buttonStyle;
+  final Object? heroTag;
 
   @override
   State<OButton<T>> createState() => _OButtonState<T>();
@@ -133,9 +135,6 @@ class _OButtonState<T> extends State<OButton<T>> {
   Widget _buildFAB(BuildContext context) {
     Widget? effectiveLabel = widget.label;
     final drawerState = ODrawer.maybeOf(context);
-    if (drawerState?.opened == false) {
-      effectiveLabel = null;
-    }
     FloatingActionButtonThemeData fabTheme = Theme.of(context).floatingActionButtonTheme;
      switch (widget.style) {
       case OButtonStyle.primary:
@@ -159,16 +158,22 @@ class _OButtonState<T> extends State<OButton<T>> {
       data: Theme.of(context).copyWith(
         floatingActionButtonTheme: fabTheme
       ),
-      child: effectiveLabel != null && widget.icon != null
-        ? FloatingActionButton.extended(
-            onPressed: effectiveOnPressed, 
-            label: effectiveLabel,
-            icon: widget.icon!,
-          )
-        : FloatingActionButton(
-            onPressed: effectiveOnPressed,
-            child: effectiveLabel ?? widget.icon,
-          ),
+      child: SizedBox(
+        width: widget.mainSize == MainAxisSize.max ? double.maxFinite : null,
+        child: effectiveLabel != null && widget.icon != null
+          ? FloatingActionButton.extended(
+              heroTag: widget.heroTag,
+              onPressed: effectiveOnPressed, 
+              label: effectiveLabel,
+              icon: widget.icon!,
+              isExtended: drawerState == null || drawerState.opened == true,
+            )
+          : FloatingActionButton(
+              heroTag: widget.heroTag,
+              onPressed: effectiveOnPressed,
+              child: effectiveLabel ?? widget.icon,
+            ),
+        )
     );
   }
 

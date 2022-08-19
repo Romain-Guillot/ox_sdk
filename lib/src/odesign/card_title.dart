@@ -6,18 +6,25 @@ enum OTitleType {
   card, dialog
 }
 
+enum OTitleStyle {
+  small,
+  normal,
+}
+
 
 class OTitle extends StatelessWidget {
   const OTitle({ 
     Key? key,
     this.icon,
     required this.label,
-    this.type = OTitleType.card
+    this.type = OTitleType.card,
+    this.style = OTitleStyle.normal
   }) : super(key: key);
 
   final Widget? icon;
   final Widget label;
   final OTitleType type;
+  final OTitleStyle style;
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +33,41 @@ class OTitle extends StatelessWidget {
       children: [
         if (icon != null)...[
           IconTheme(
-            data: const IconThemeData(size: 28),
+            data: IconThemeData(
+              size: style.iconSize(context)
+            ),
             child: icon!
           ),
           const PaddingSpacer(),
         ],
         DefaultTextStyle.merge(
           style: type == OTitleType.card
-            ? Theme.of(context).textTheme.titleMedium
+            ? style.titleStyle(context)
             : Theme.of(context).textTheme.headlineSmall,
           child: label
         ),
       ],
     );
+  }
+}
+
+
+extension on OTitleStyle {
+  double iconSize(BuildContext context) {
+    switch (this) {
+      case OTitleStyle.normal:
+        return 28;
+      case OTitleStyle.small:
+        return 20;
+    }
+  }
+
+  TextStyle? titleStyle(BuildContext context) {
+    switch (this) {
+      case OTitleStyle.normal:
+        return Theme.of(context).textTheme.titleMedium;
+      case OTitleStyle.small:
+        return Theme.of(context).textTheme.titleSmall;
+    }
   }
 }

@@ -1,17 +1,17 @@
 # This is a generated file; do not edit or check into version control.
-file_picker=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.5.1/
-flutter_plugin_android_lifecycle=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/
-package_info_plus=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus-1.4.2/
+file_picker=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-5.0.1/
+flutter_plugin_android_lifecycle=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
+package_info_plus=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus-1.4.3+1/
 package_info_plus_linux=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_linux-1.0.5/
 package_info_plus_macos=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_macos-1.3.0/
 package_info_plus_web=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_web-1.0.5/
-package_info_plus_windows=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_windows-1.0.5/
+package_info_plus_windows=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/package_info_plus_windows-2.0.0/
 path_provider=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.10/
 path_provider_android=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.14/
 path_provider_ios=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.9/
-path_provider_linux=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.6/
+path_provider_linux=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.7/
 path_provider_macos=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.6/
-path_provider_windows=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.6/
+path_provider_windows=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.2/
 sentry_flutter=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/sentry_flutter-6.5.1/
 wakelock=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.1+2/
 wakelock_macos=/home/ob/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0/

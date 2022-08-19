@@ -3,10 +3,12 @@ library ox_sdk;
 export 'package:dio/dio.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 export 'package:flutter_svg/flutter_svg.dart';
-export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:retrofit/retrofit.dart' hide Headers;
 export 'package:path_provider/path_provider.dart';
 export 'package:rxdart/rxdart.dart';
+export 'package:intl/intl.dart';
+export 'package:logger/logger.dart';
+export 'package:flutter_font_icons/flutter_font_icons.dart';
 
 
 
@@ -17,6 +19,8 @@ export 'src/odesign/form/text_field.dart';
 export 'src/odesign/form/field_wrapper.dart';
 export 'src/odesign/form/distance_field.dart';
 export 'src/odesign/form/durantion_field.dart';
+
+export 'src/odesign/layouts/dismissible_header.layout.dart';
 
 export 'src/odesign/themings/theme.dart';
 export 'src/odesign/themings/theme_extension.dart';

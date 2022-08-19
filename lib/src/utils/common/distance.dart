@@ -1,3 +1,4 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
 part 'distance.freezed.dart';

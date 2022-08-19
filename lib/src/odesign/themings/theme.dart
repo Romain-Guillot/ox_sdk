@@ -46,11 +46,23 @@ ThemeData theme(LayoutDensity density) {
         displayMedium: TextStyle(
           fontSize: 38
         ),
+        titleLarge: TextStyle(
+          fontSize: 24
+        ),
+        titleSmall: TextStyle(
+          fontSize: 15,
+        ),
         titleMedium: TextStyle(
           fontSize: 16,
         ),
+        bodySmall: TextStyle(
+          fontSize: 13,
+        ),
         bodyMedium: TextStyle(
           fontSize: 14,
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 15,
         ),
         headlineSmall: TextStyle(
           fontSize: 18,
@@ -68,10 +80,22 @@ ThemeData theme(LayoutDensity density) {
         displayMedium: TextStyle(
           fontSize: 45
         ),
+        titleLarge: TextStyle(
+          fontSize: 30
+        ),
+        titleSmall: TextStyle(
+          fontSize: 16,
+        ),
         titleMedium: TextStyle(
           fontSize: 18,
         ),
+        bodySmall: TextStyle(
+          fontSize: 13,
+        ),
         bodyMedium: TextStyle(
+          fontSize: 13,
+        ),
+        bodyLarge: TextStyle(
           fontSize: 14,
         ),
         headlineSmall: TextStyle(
@@ -84,10 +108,10 @@ ThemeData theme(LayoutDensity density) {
       break;
   }
   final radiuses = RadiusesTheme(
-    tiny: BorderRadius.circular(6), 
-    small: BorderRadius.circular(12), 
-    medium: BorderRadius.circular(20), 
-    big: BorderRadius.circular(30)
+    tiny: BorderRadius.circular(4), 
+    small: BorderRadius.circular(10), 
+    medium: BorderRadius.circular(15), 
+    big: BorderRadius.circular(28)
   );
   const colors = ColorsTheme(
     error: Colors.red,
@@ -178,7 +202,15 @@ ThemeData theme(LayoutDensity density) {
         onVariant: Colors.white,
         container: Color(0xFF48DDB0),
         onContainer: Colors.white
-      )
+      ),
+      SupportingColors.sand: SupportingColorData(
+        primary: Color(0xFFFFD37E),
+        onPrimary: Colors.white,
+        variant: Color(0xFFB07F20),
+        onVariant: Colors.white,
+        container: Color(0xFFFFD37E),
+        onContainer: Colors.white
+      ),
     }
   );
   return ThemeData(
@@ -253,7 +285,17 @@ ThemeData theme(LayoutDensity density) {
       backgroundColor: Colors.black,
       shape: RoundedRectangleBorder(
         borderRadius: radiuses.medium
-      )
+      ),
+      highlightElevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      disabledElevation: 0,
+      elevation: 0,
+      extendedPadding: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20
+      ),
+      extendedSizeConstraints: BoxConstraints(minHeight: 0)
     ),
 
     inputDecorationTheme: const InputDecorationTheme(
@@ -292,10 +334,16 @@ ThemeData theme(LayoutDensity density) {
       displayMedium: textThemeFontSizes.displayMedium?.copyWith(
         fontWeight: FontWeight.bold
       ),
+      titleSmall: textThemeFontSizes.titleSmall?.copyWith(
+        fontWeight: FontWeight.bold
+      ),
       titleMedium: textThemeFontSizes.titleMedium?.copyWith(
         fontWeight: FontWeight.w900
       ),
       bodyMedium: textThemeFontSizes.bodyMedium?.copyWith(
+        fontWeight: FontWeight.bold
+      ),
+      bodyLarge: textThemeFontSizes.bodyLarge?.copyWith(
         fontWeight: FontWeight.bold
       ),
       headlineSmall: textThemeFontSizes.headlineSmall?.copyWith(
@@ -303,7 +351,11 @@ ThemeData theme(LayoutDensity density) {
       ),
       labelLarge: textThemeFontSizes.labelLarge?.copyWith(
         fontWeight: FontWeight.bold
-      )
+      ),
+      titleLarge: textThemeFontSizes.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold
+      ),
+
     ).apply(
       bodyColor: Colors.black,
       displayColor: Colors.black
@@ -343,7 +395,8 @@ ThemeData theme(LayoutDensity density) {
       const PaddingsTheme(
         medium: 20, 
         big: 30, 
-        small: 8
+        small: 8,
+        tiny: 3
       ),
       const ConstraintsTheme(
         maxPageWidth: 1024,
@@ -362,7 +415,7 @@ ThemeData theme(LayoutDensity density) {
           headerStyle: const OGridHeaderStyle(
             verticalSpacing: 15,
             decoration: BoxDecoration(
-
+              
             ),
             textStyle: TextStyle(
               // fontSize: 15,
@@ -371,11 +424,33 @@ ThemeData theme(LayoutDensity density) {
             )
           ),
           rowStyle: GridRowStyle(
-            padding: const EdgeInsets.symmetric(
-              vertical: 8,
-              horizontal: 18
-            ),
-            minHeight: 45,
+            padding: (density) {
+               if (density == VisualDensity.compact) {
+                return const EdgeInsets.symmetric(
+                  vertical: 0,
+                  horizontal: 18
+                );
+              } else if (density == VisualDensity.comfortable) {
+                return const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 18
+                );
+              } else {
+                return const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 18
+                );
+              }
+            },
+            minHeight: (density) {
+              if (density == VisualDensity.compact) {
+                return 25;
+              } else if (density == VisualDensity.comfortable) {
+                return 50;
+              } else {
+                return 45;
+              }
+            },
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey[200]!))
             )

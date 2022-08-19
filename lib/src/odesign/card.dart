@@ -73,7 +73,8 @@ class OCard extends StatelessWidget {
     this.density = OCardDensity.medium,
     this.supportingStyle = OCardStyle.normal,
     this.clip = Clip.antiAliasWithSaveLayer,
-    this.contentPadding
+    this.contentPadding,
+    this.onLongPress
   }) : super(key: key);
 
   final Widget? title;
@@ -92,6 +93,7 @@ class OCard extends StatelessWidget {
   final OCardDensity density;
   final Clip clip;
   final EdgeInsets? contentPadding;
+  final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +125,6 @@ class OCard extends StatelessWidget {
         break;
     }
     Widget _child = child;
-    if (expand) {
-      _child = Expanded(
-        child: _child,
-      );
-    }
     if (hasContentPadding) {
       _child = Padding(
         padding: hasContentPadding
@@ -136,6 +133,13 @@ class OCard extends StatelessWidget {
         child: _child,
       );
     }
+
+    if (expand) {
+      _child = Expanded(
+        child: _child,
+      );
+    }
+
 
     final supportingColors = Theme.of(context).colors.supportings[supporting];
     Color cardColor;
@@ -183,11 +187,13 @@ class OCard extends StatelessWidget {
         child: Builder(
           builder: (context) => InkWell(
             onTap: onTap,
+            onLongPress: onLongPress,
             child: SizedBox(
               width: mainAxisSize == MainAxisSize.min ? null : double.maxFinite,
               child: DefaultTextStyle.merge(
                 style: TextStyle(color: foregroundColor),
                 child: Column(
+                  mainAxisSize: mainAxisSize,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (title != null || actions != null)
