@@ -46,6 +46,7 @@ export 'src/odesign/tile.dart';
 export 'src/odesign/timer.dart';
 export 'src/odesign/tooltip.dart';
 export 'src/odesign/app_bar.dart';
+export 'src/odesign/loader.dart';
 
 
 

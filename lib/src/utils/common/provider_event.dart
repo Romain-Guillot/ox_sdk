@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:ox_sdk/src/odesign/snackbar.dart';
 
 
 
@@ -51,17 +53,45 @@ enum EventType {
 
 
 @immutable
-class Event {
-  const Event({
-    required this.type,
-    this.error,
-    this.stackTrace
+class DataEvent<T, K> {
+
+  const DataEvent.success(this.success) : error = null;
+  const DataEvent.error(this.error) : success = null;
+
+  final T? success;
+  final K? error;
+}
+
+
+ScaffoldFeatureController? showDataEvent<T, K>(BuildContext context, {
+  required dynamic originator,
+  required ProviderEvent<DataEvent<T, K>> event,
+  required String Function(K)? errorBuilder,
+  required String Function(T)? succesBuilder,
+}) {
+  ScaffoldFeatureController? controller;
+   if (event.hasValue()) {
+    final eventValue = event.consume(originator: originator);
+    final error = eventValue?.error;
+    final success = eventValue?.success;
+    if (errorBuilder != null && error != null) {
+      final errorMessage = errorBuilder(error);
+      return showErrorSnackbar(context: context, content: Text(errorMessage));
+    } else if (succesBuilder != null && success != null) {
+      final successMessage = succesBuilder(success);
+      return showSuccessSnackbar(context: context, content: Text(successMessage));
+    }
+  }
+  return controller;
+}
+
+
+class EventDescription {
+  const EventDescription({
+    required this.title,
+    this.message
   });
 
-  const Event.success() : this(type: EventType.success, error: null);
-  const Event.error(dynamic e, [StackTrace? s]) : this(type: EventType.error, error: e, stackTrace: s);
-
-  final EventType type;
-  final dynamic error;
-  final StackTrace? stackTrace;
+  final String title;
+  final String? message;
 }

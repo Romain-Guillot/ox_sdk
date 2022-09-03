@@ -24,49 +24,58 @@ class ODialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final padding = Theme.of(context).paddings.medium;
-    return AlertDialog(
-      titlePadding: EdgeInsets.zero,
-      scrollable: scrollable,
-      title: title != null || actions != null 
-        ? DefaultTextStyle.merge(
-            style: Theme.of(context).appBarTheme.titleTextStyle,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: padding / 2,
-                bottom: padding / 2,
-                right: padding
-              ),
-              child: Row(
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints.tightFor(width: 26 + padding * 2),
-                    child: const IconTheme(
-                      data: IconThemeData(size: 26),
-                      child: CloseButton()
+    return ScaffoldMessenger(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => Navigator.of(context).pop(),
+          child: AlertDialog(
+            titlePadding: EdgeInsets.zero,
+            scrollable: scrollable,
+            title: title != null || actions != null 
+              ? DefaultTextStyle.merge(
+                  style: Theme.of(context).appBarTheme.titleTextStyle,
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: padding / 2,
+                      bottom: padding / 2,
+                      right: padding
                     ),
-                  ),
-                  Expanded(child: title ?? Container()),
-                  if (actions != null)
-                    ...actions!.map((action) => Padding(
-                      padding: actions!.last == action 
-                        ? EdgeInsets.zero 
-                        : EdgeInsets.only(
-                            right: Theme.of(context).paddings.small
+                    child: Row(
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints.tightFor(width: 26 + padding * 2),
+                          child: const IconTheme(
+                            data: IconThemeData(size: 26),
+                            child: CloseButton()
                           ),
-                      child: action,
-                    )).toList()
-                ],
-              ),
-            )
-          )
-        : null,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      contentPadding: noPadding ? EdgeInsets.zero : EdgeInsets.all(padding).copyWith(top: 0),
-      contentTextStyle: Theme.of(context).textTheme.bodyText1,
-      content: content,
-      actions: bottomActions,
-      actionsAlignment: MainAxisAlignment.end,
-      
+                        ),
+                        Expanded(child: title ?? Container()),
+                        if (actions != null)
+                          ...actions!.map((action) => Padding(
+                            padding: actions!.last == action 
+                              ? EdgeInsets.zero 
+                              : EdgeInsets.only(
+                                  right: Theme.of(context).paddings.small
+                                ),
+                            child: action,
+                          )).toList()
+                      ],
+                    ),
+                  )
+                )
+              : null,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            contentPadding: noPadding ? EdgeInsets.zero : EdgeInsets.all(padding).copyWith(top: 0),
+            contentTextStyle: Theme.of(context).textTheme.bodyText1,
+            content: content,
+            actions: bottomActions,
+            actionsAlignment: MainAxisAlignment.end,
+            
+          ),
+        ),
+      ),
     );
   }
 }

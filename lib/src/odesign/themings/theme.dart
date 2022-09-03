@@ -111,7 +111,7 @@ ThemeData theme(LayoutDensity density) {
     tiny: BorderRadius.circular(4), 
     small: BorderRadius.circular(10), 
     medium: BorderRadius.circular(15), 
-    big: BorderRadius.circular(28)
+    big: BorderRadius.circular(22)
   );
   const colors = ColorsTheme(
     error: Colors.red,
@@ -291,11 +291,25 @@ ThemeData theme(LayoutDensity density) {
       hoverElevation: 0,
       disabledElevation: 0,
       elevation: 0,
-      extendedPadding: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 20
+      // extendedPadding: EdgeInsets.symmetric(
+      //   vertical: 10,
+      //   horizontal: 20
+      // ),
+      // extendedSizeConstraints: BoxConstraints(minHeight: 0)
+    ),
+
+    chipTheme: ChipThemeData(
+      backgroundColor: const Color(0xFFF2F2F2),
+      secondarySelectedColor: Colors.red,
+      selectedColor: Colors.black,
+      labelStyle: textThemeFontSizes.bodyMedium?.copyWith(
+        color: Colors.grey[700]
       ),
-      extendedSizeConstraints: BoxConstraints(minHeight: 0)
+      elevation: 2,
+      checkmarkColor: Colors.white,
+      shape: StadiumBorder(
+        side: BorderSide.none
+      )
     ),
 
     inputDecorationTheme: const InputDecorationTheme(
@@ -324,7 +338,12 @@ ThemeData theme(LayoutDensity density) {
         )
       )
     ),
-
+    popupMenuTheme: PopupMenuThemeData(
+      elevation: 8,      
+      shape: RoundedRectangleBorder(
+        borderRadius: radiuses.medium
+      )
+    ),
     useMaterial3: true,
     
     textTheme: textThemeFontSizes.copyWith(
@@ -395,7 +414,7 @@ ThemeData theme(LayoutDensity density) {
       const PaddingsTheme(
         medium: 20, 
         big: 30, 
-        small: 8,
+        small: 12,
         tiny: 3
       ),
       const ConstraintsTheme(

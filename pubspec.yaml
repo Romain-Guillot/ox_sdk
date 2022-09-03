@@ -28,6 +28,8 @@ dependencies:
   path_provider: ^2.0.10
   rxdart: ^0.27.3
   wakelock: ^0.6.1+2
+  latlong2: ^0.8.1
+  flutter_map: ^3.0.0-beta.1
 
 
 dev_dependencies:

@@ -38,8 +38,43 @@ class OButtonPopupEntry<T> {
   final Color? color;
 }
 
-
-
+class OPopupMenu {
+  static Future<T?> show<T>({
+    required BuildContext context,
+    required List<OButtonPopupEntry<T>> entries,
+    required RelativeRect position
+  }) async {
+    final popupMenuTheme = PopupMenuTheme.of(context);
+    final items = entries.map((entry) => PopupMenuItem<T>(
+      value: entry.value,
+      textStyle: (Theme.of(context).textTheme.labelLarge ?? const TextStyle()).copyWith(
+        color: entry.color
+      ),
+      child: Row(children: [
+        if (entry.icon != null)...[
+          IconTheme(
+            data: IconThemeData(size: 18, color: entry.color),
+            child: entry.icon!
+          ),
+          PaddingSpacer.small(),
+        ],
+        entry.label
+      ]),
+    )).toList();
+    if (items.isNotEmpty) {
+      return showMenu<T?>(
+        context: context,
+        elevation: popupMenuTheme.elevation,
+        items: items,
+        position: position,
+        shape: RoundedRectangleBorder(
+          borderRadius: Theme.of(context).radiuses.small
+        )
+      );
+    }
+    return null;
+  }
+}
 
 
 class OButton<T> extends StatefulWidget {
@@ -78,7 +113,6 @@ class OButton<T> extends StatefulWidget {
 
 class _OButtonState<T> extends State<OButton<T>> {
   void showButtonMenu() {
-    final popupMenuTheme = PopupMenuTheme.of(context);
     final button = context.findRenderObject()! as RenderBox;
     final overlay = Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
     final position = RelativeRect.fromRect(
@@ -88,39 +122,15 @@ class _OButtonState<T> extends State<OButton<T>> {
       ),
       Offset.zero & overlay.size,
     );
-    final items = widget.popupMenuEntries!.map((entry) => PopupMenuItem<T>(
-      value: entry.value,
-      textStyle: (Theme.of(context).textTheme.labelLarge ?? const TextStyle()).copyWith(
-        color: entry.color
-      ),
-      child: Row(children: [
-        if (entry.icon != null)...[
-          IconTheme(
-            data: IconThemeData(size: 18, color: entry.color),
-            child: entry.icon!
-          ),
-          PaddingSpacer.small(),
-        ],
-        entry.label
-      ]),
-    )).toList();
-    // Only show the menu if there is something to show
-    if (items.isNotEmpty) {
-      showMenu<T?>(
-        context: context,
-        elevation: popupMenuTheme.elevation,
-        items: items,
-        position: position,
-        shape: RoundedRectangleBorder(
-          borderRadius: Theme.of(context).radiuses.small
-        )
-      )
-      .then<void>((T? newValue) {
-        if (newValue != null) {
-          widget.onSelected?.call(newValue);
-        }
-      });
-    }
+    OPopupMenu.show<T?>(
+      context: context,
+      entries: widget.popupMenuEntries ?? [],
+      position: position,
+    ).then<void>((T? newValue) {
+      if (newValue != null) {
+        widget.onSelected?.call(newValue);
+      }
+    });
   }
 
 

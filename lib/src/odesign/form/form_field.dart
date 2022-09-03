@@ -103,9 +103,10 @@ class OFormField extends StatelessWidget {
             wide: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (effectiveLabel != null)
+                if (effectiveLabel != null)...[
                   effectiveLabel, 
-                const PaddingSpacer(),
+                  const PaddingSpacer(),
+                ],
                 Expanded(child: effectiveField)
               ]
             ),

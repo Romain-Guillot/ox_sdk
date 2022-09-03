@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
 abstract class XField<T> {
@@ -274,6 +275,51 @@ class XDistanceField extends XField<DistanceFieldValue> {
     unit: unit
   );
 }
+
+
+
+class XLocationField extends XField<LatLng> {
+  XLocationField({
+    LatLng? initialValue,
+    this.validators,
+  }) : _value = initialValue,
+       super(initialValue);
+
+  final List<ValueChanged<LatLng?>> _listeners = [];
+
+
+  @override
+  List<FormFieldValidator<LatLng>>? validators;
+
+  LatLng? _value;
+
+  @override
+  LatLng? get value => _value;
+
+  @override
+  void setValue(LatLng? newValue) {
+    _value = newValue;
+    for (final listener in _listeners) {
+      listener.call(value);
+    }
+  }
+
+  @override
+  void addListener(ValueChanged<LatLng?> callback) {
+    _listeners.add(callback);
+  }
+
+  @override
+  bool hasChanged() {
+    return initialValue != value;
+  }
+
+  @override
+  void removeListener(ValueChanged<LatLng?> callback) {
+    _listeners.removeWhere((element) => element == callback);
+  }
+}
+
 
 
 

@@ -74,7 +74,8 @@ class OCard extends StatelessWidget {
     this.supportingStyle = OCardStyle.normal,
     this.clip = Clip.antiAliasWithSaveLayer,
     this.contentPadding,
-    this.onLongPress
+    this.onLongPress,
+    this.fullWidth = false
   }) : super(key: key);
 
   final Widget? title;
@@ -94,6 +95,7 @@ class OCard extends StatelessWidget {
   final Clip clip;
   final EdgeInsets? contentPadding;
   final VoidCallback? onLongPress;
+  final bool fullWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +191,7 @@ class OCard extends StatelessWidget {
             onTap: onTap,
             onLongPress: onLongPress,
             child: SizedBox(
-              width: mainAxisSize == MainAxisSize.min ? null : double.maxFinite,
+              width: fullWidth ? double.maxFinite : null,
               child: DefaultTextStyle.merge(
                 style: TextStyle(color: foregroundColor),
                 child: Column(
