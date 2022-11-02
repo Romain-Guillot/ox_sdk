@@ -115,13 +115,17 @@ class OBadge extends StatelessWidget {
                   PaddingSpacer.small(),
                 ],
                 if (label != null)
-                  DefaultTextStyle.merge(
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: foregroundColor
-                    ), 
-                    child: label!
+                  Flexible(
+                    child:  DefaultTextStyle.merge(
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: foregroundColor,
+                      ), 
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      child: label!
+                    ),
                   ),
                 if (trailing != null)...[
                   PaddingSpacer.small(),

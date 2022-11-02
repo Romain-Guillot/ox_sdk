@@ -81,7 +81,7 @@ class ODrawerState extends State<ODrawer> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconTheme.merge(
-                          data: const IconThemeData(size: 38),
+                          data: const IconThemeData(size: 30),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(999),
                             onTap: () {

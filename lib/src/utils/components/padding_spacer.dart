@@ -7,6 +7,7 @@ enum PaddingType {
   normal,
   small,
   big,
+  tiny
 }
 
 
@@ -19,6 +20,7 @@ class PaddingSpacer extends StatelessWidget {
 
   final PaddingType type;
 
+  factory PaddingSpacer.tiny() => const PaddingSpacer(type: PaddingType.tiny);
   factory PaddingSpacer.small() => const PaddingSpacer(type: PaddingType.small);
   factory PaddingSpacer.big() => const PaddingSpacer(type: PaddingType.big);
 
@@ -31,6 +33,8 @@ class PaddingSpacer extends StatelessWidget {
         return paddings.small;
       case PaddingType.big: 
         return paddings.big;
+      case PaddingType.tiny: 
+        return paddings.tiny;
  
     }
   }

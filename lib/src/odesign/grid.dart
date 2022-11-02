@@ -26,7 +26,7 @@ class OGridColumn<T> {
     this.width,
     this.alignment = Alignment.centerLeft,
     this.isDefaultSortOrder = false
-  }) : assert((label != null || child != null) && (label == null || child == null));
+  });
 
   final Key key;
   final Widget? child;
@@ -117,6 +117,7 @@ class __HeaderState<T> extends State<_Header<T>> {
 
   OGridColumn<T>? sortColumn;
   OColumnSortOrder? sortOrder;
+  AutoSizeGroup autoSizeGroup = AutoSizeGroup();
 
   ODataGridTheme? get theme => widget.theme;
   List<OGridColumn<T>> get columns => widget.columns;
@@ -139,7 +140,8 @@ class __HeaderState<T> extends State<_Header<T>> {
         Widget child = column.child != null 
           ? column.child!
           : AutoSizeText(
-              column.label!, 
+              group: autoSizeGroup,
+              column.label ?? '', 
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             );

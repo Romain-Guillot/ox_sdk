@@ -311,6 +311,7 @@ ThemeData theme(LayoutDensity density) {
         side: BorderSide.none
       )
     ),
+    
 
     inputDecorationTheme: const InputDecorationTheme(
       border: UnderlineInputBorder(

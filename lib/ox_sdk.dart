@@ -9,7 +9,11 @@ export 'package:rxdart/rxdart.dart';
 export 'package:intl/intl.dart';
 export 'package:logger/logger.dart';
 export 'package:flutter_font_icons/flutter_font_icons.dart';
-
+export 'package:file_picker/file_picker.dart';
+export 'package:json_annotation/json_annotation.dart';
+export 'package:freezed_annotation/freezed_annotation.dart';
+export 'package:collection/collection.dart';
+export 'package:dio/dio.dart';
 
 
 export 'src/odesign/form/form_field.dart';
@@ -78,7 +82,7 @@ export 'src/utils/extensions/num.ext.dart';
 export 'src/utils/extensions/duration.ext.dart';
 export 'src/utils/extensions/date.dart';
 export 'src/utils/extensions/edge_insets.ext.dart';
-
+export 'src/utils/extensions/enum.extension.dart';
 
 
 export 'src/xframework/form/change_notifier.dart';
