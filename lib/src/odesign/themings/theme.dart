@@ -51,6 +51,9 @@ const colorScheme =  ColorScheme(
   surface: Colors.white,
   onSurface: Colors.black,
 
+  primaryContainer: Colors.white,
+  onPrimaryContainer: Colors.black,
+
   brightness: Brightness.light,
 );
 
