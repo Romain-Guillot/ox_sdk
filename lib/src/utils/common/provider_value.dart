@@ -4,17 +4,24 @@ import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
 
 class ProviderValue<T, K> {
-  ProviderValue();
+  ProviderValue({
+    this.notify,
+  });
   
-  ProviderValue.fromValue(T? value) {
+  ProviderValue.fromValue(T value, {
+    this.notify,
+  }) {
     this.value = value;
   }
+
+  final Function? notify;
 
   T? _value;
   set value(T? value) {
     _value = value;
     _initialized = true;
     _error = null;
+    notify?.call();
   }
   T? get value => _value;
   bool get hasData {
@@ -31,6 +38,7 @@ class ProviderValue<T, K> {
     _error = error;
     _initialized = true;
     _value = null;
+    notify?.call();
   }
   K? get error => _error;
   bool get hasError => _error != null;
@@ -44,6 +52,7 @@ class ProviderValue<T, K> {
     _error = null;
     _value = null;
     _initialized = false;
+    notify?.call();
   }
 }
 
@@ -68,7 +77,7 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
   final bool isSliver;
   final Widget Function(BuildContext context)? loadingBuilder;
   final Widget Function(BuildContext context, K? error)? errorBuilder;
-  final Widget Function(BuildContext context, T? value) dataBuilder;
+  final Widget Function(BuildContext context, T value) dataBuilder;
   final Widget Function(BuildContext context)? emptyDataBuilder;
 
   @override
@@ -87,7 +96,7 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
         ? emptyDataBuilder!.call(context) 
         : const DefaultEmptyDataWidget(child: Text('no data'));
     } else {
-      return dataBuilder(context, value.value);
+      return dataBuilder(context, value.value!);
     }
     if (isSliver) {
       child  = SliverToBoxAdapter(child: child);

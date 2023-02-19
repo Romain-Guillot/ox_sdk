@@ -5,20 +5,30 @@ import 'package:ox_sdk/src/odesign/snackbar.dart';
 
 
 class ProviderEvent<T> {
-  ProviderEvent();
-  ProviderEvent.fromEvent(this.value);
+  ProviderEvent({
+    this.notify,
+  });
+  ProviderEvent.fromEvent(this.value, {
+    this.notify,
+  });
+
   T? value;
   final List _consumers = <Object>[];
+  final Function? notify;
+
 
   void add(T value) {
     _consumers.clear();
     this.value = value;
+    notify?.call();
   }
+
 
   void remove() {
     _consumers.clear();
     value = null;
   }
+
 
   bool hasValue({Object? originator, bool consume = false}) {
     final bool result = value != null && (originator == null || !_consumers.contains(originator));
@@ -27,6 +37,7 @@ class ProviderEvent<T> {
     }
     return result;
   }
+
 
   T? consume({Object? originator}) {
     if (value == null || _consumers.contains(originator)) {

@@ -11,9 +11,10 @@ enum OCardType {
 
 
 enum OCardFunction {
-  classic,
+  primary,
+  secondary,
+  tertiary,
   error,
-  info
 }
 
 
@@ -32,23 +33,27 @@ enum OCardStyle {
 extension on OCardFunction {
   Color backgroundColor(BuildContext context) {
     switch (this) {
-      case OCardFunction.classic:
-        return Theme.of(context).colorScheme.surface;
+      case OCardFunction.primary:
+        return Theme.of(context).colorScheme.primaryContainer;
+      case OCardFunction.secondary:
+        return Theme.of(context).colorScheme.secondaryContainer;
       case OCardFunction.error:
-        return Theme.of(context).colors.error;
-      case OCardFunction.info:
-        return Theme.of(context).colors.info;
+        return Theme.of(context).colorScheme.errorContainer;
+      case OCardFunction.tertiary:
+        return Theme.of(context).colorScheme.tertiaryContainer;
     }
   }
 
   Color foregroundColor(BuildContext context) {
     switch (this) {
-      case OCardFunction.classic:
-        return Theme.of(context).colorScheme.onSurface;
+      case OCardFunction.primary:
+        return Theme.of(context).colorScheme.onPrimaryContainer;
+      case OCardFunction.secondary:
+        return Theme.of(context).colorScheme.onSecondaryContainer;
       case OCardFunction.error:
-        return Theme.of(context).colors.onError;
-      case OCardFunction.info:
-        return Theme.of(context).colors.onInfo;
+        return Theme.of(context).colorScheme.onErrorContainer;
+      case OCardFunction.tertiary:
+        return Theme.of(context).colorScheme.onTertiaryContainer;
     }
   }
 }
@@ -63,7 +68,7 @@ class OCard extends StatelessWidget {
     this.actions,
     required this.child,
     this.elevation,
-    this.function = OCardFunction.classic,
+    this.function = OCardFunction.primary,
     this.mainAxisSize = MainAxisSize.min,
     this.hasContentPadding = false,
     this.onTap,

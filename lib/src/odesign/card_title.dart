@@ -31,15 +31,19 @@ class OTitle extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (icon != null)...[
-          IconTheme(
-            data: IconThemeData(
-              size: style.iconSize(context)
+        if (icon != null)
+          SizedBox(
+            width: 40,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: IconTheme(
+                data: IconThemeData(
+                  size: style.iconSize(context)
+                ),
+                child: icon!
+              ),
             ),
-            child: icon!
           ),
-          const PaddingSpacer(),
-        ],
         DefaultTextStyle.merge(
           style: type == OTitleType.card
             ? style.titleStyle(context)

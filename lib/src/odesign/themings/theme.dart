@@ -7,7 +7,7 @@ import 'package:ox_sdk/src/utils/components/adaptative_layout_builder.dart';
 
 
 const double kBreakpointLarge = 1024;
-const double kFABMarginBottom = 64;
+const double kFABMarginBottom = 66;
 const double kFABMargin = 64;
 
 class ThemeBuilder extends StatelessWidget {
@@ -35,7 +35,29 @@ enum LayoutDensity {
 }
 
 
-ThemeData theme(LayoutDensity density) {
+const colorScheme =  ColorScheme(
+  primary: Colors.black,
+  onPrimary: Colors.white,
+
+  secondary: Colors.black,
+  onSecondary: Colors.white,
+
+  background: Color(0xFFF2F2F2),
+  onBackground: Colors.black,
+
+  error: Colors.red,
+  onError: Colors.white,
+
+  surface: Colors.white,
+  onSurface: Colors.black,
+
+  brightness: Brightness.light,
+);
+
+
+ThemeData theme(LayoutDensity density, {
+  ColorScheme colorScheme = colorScheme
+}) {
   TextTheme textThemeFontSizes;
   switch (density) {
     case LayoutDensity.narrow:
@@ -381,32 +403,15 @@ ThemeData theme(LayoutDensity density) {
       displayColor: Colors.black
     ),
 
-    colorScheme: const ColorScheme(
-      primary: Colors.black,
-      onPrimary: Colors.white,
-
-      secondary: Colors.black,
-      onSecondary: Colors.white,
-
-      background: Color(0xFFF2F2F2),
-      onBackground: Colors.black,
-
-      error: Colors.red,
-      onError: Colors.white,
-
-      surface: Colors.white,
-      onSurface: Colors.black,
-
-      brightness: Brightness.light,
-    ),
+    colorScheme: colorScheme,
     extensions: [
       ButtonThemes(
         error: TextButton.styleFrom(
-          primary: colors.onError,
-          backgroundColor: colors.error
+          foregroundColor: colorScheme.onErrorContainer,
+          backgroundColor: colorScheme.errorContainer
         ),
         success: TextButton.styleFrom(
-          primary: colors.onSuccess,
+          foregroundColor: colors.onSuccess,
           backgroundColor: colors.success
         ),
       ),
