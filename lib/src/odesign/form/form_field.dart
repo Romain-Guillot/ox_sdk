@@ -18,7 +18,8 @@ class OFormField extends StatelessWidget {
     this.fieldSize,
     this.errors,
     this.layout,
-    this.expandField = false
+    this.expandField = false,
+    this.leading,
   }) : super(key: key);
 
   final Widget? label;
@@ -28,6 +29,7 @@ class OFormField extends StatelessWidget {
   final List<Widget>? errors;
   final LayoutDensity? layout;
   final bool expandField;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,8 @@ class OFormField extends StatelessWidget {
             child: child
           )
         ),
+        if (leading != null)
+          leading!,
         if (errors != null && errors?.isNotEmpty == true)
           OTooltip(
             tooltip: Column(
