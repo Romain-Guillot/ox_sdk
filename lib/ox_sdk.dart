@@ -68,6 +68,7 @@ export 'src/utils/common/sentry_output.dart';
 export 'src/utils/common/color_operations.dart';
 export 'src/utils/common/stopwatch.dart';
 export 'src/utils/common/distance.dart';
+export 'src/utils/common/intersperse.dart';
 
 export 'src/utils/components/adaptative_layout_builder.dart';
 export 'src/utils/components/keyboard_visibility.dart';
@@ -85,6 +86,7 @@ export 'src/utils/extensions/duration.ext.dart';
 export 'src/utils/extensions/date.dart';
 export 'src/utils/extensions/edge_insets.ext.dart';
 export 'src/utils/extensions/enum.extension.dart';
+export 'src/utils/extensions/intersperse_extensions.dart';
 
 
 export 'src/xframework/form/change_notifier.dart';
