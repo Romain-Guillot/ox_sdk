@@ -4,17 +4,17 @@ import 'package:latlong2/latlong.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
 abstract class XField<T> {
-  XField(T? initialValue) 
-    : _initialValue = initialValue, 
-      history = [initialValue];
-  
+  XField(T? initialValue)
+      : _initialValue = initialValue,
+        history = [initialValue];
+
   final T? _initialValue;
   T? get initialValue => _initialValue;
-  
+
   T? get value;
 
   List<FormFieldValidator<T>>? get validators;
-  
+
   void setValue(T? newValue);
 
   void addListener(ValueChanged<T?> callback);
@@ -27,14 +27,9 @@ abstract class XField<T> {
     return errors() != null && errors()?.isNotEmpty == true;
   }
 
-
   List<String>? errors() {
-    return validators
-      ?.map((validator) => validator.call(value))
-      .where((e) => e != null)
-      .toList()
-      .cast<String>();
-  } 
+    return validators?.map((validator) => validator.call(value)).where((e) => e != null).toList().cast<String>();
+  }
 
   bool canUndo() {
     return history.length >= 2;
@@ -51,31 +46,25 @@ abstract class XField<T> {
   }
 }
 
-
-
 class XTextField extends XField<String> {
   XTextField({
     String? initialValue,
     this.validators,
-  }) : controller = TextEditingController(text: initialValue),
-       super(initialValue);
+  })  : controller = TextEditingController(text: initialValue),
+        super(initialValue);
 
-  
   final TextEditingController controller;
-  
+
   @override
   final List<FormFieldValidator<String>>? validators;
 
-
   @override
   String get value => controller.text;
-
 
   @override
   void setValue(String? newValue) {
     controller.value = TextEditingValue(text: newValue ?? '');
   }
-
 
   @override
   void addListener(ValueChanged<String?> callback) {
@@ -95,18 +84,14 @@ class XTextField extends XField<String> {
   }
 }
 
-
-
 class XRadioListField<T> extends XField<T> {
-
   XRadioListField({
     T? initialValue,
     this.validators,
-  }) : _value = initialValue,
-       super(initialValue);
+  })  : _value = initialValue,
+        super(initialValue);
 
   final List<ValueChanged<T?>> _listeners = [];
-
 
   @override
   List<FormFieldValidator<T>>? validators;
@@ -129,13 +114,10 @@ class XRadioListField<T> extends XField<T> {
     _listeners.add(callback);
   }
 
-
   @override
   bool hasChanged() {
     return initialValue != value;
   }
-
-
 
   @override
   void removeListener(ValueChanged<T?> callback) {
@@ -143,21 +125,18 @@ class XRadioListField<T> extends XField<T> {
   }
 }
 
-
 class XDurationField extends XField<Duration> {
   XDurationField({
     Duration? initialValue,
     this.validators,
-  }) : hoursController = TextEditingController(text: initialValue?.hours.toString()),
-       minutesController = TextEditingController(text: initialValue?.minutes.toString()),
-       secondsController = TextEditingController(text: initialValue?.seconds.toString()),
-       super(initialValue)
-  {
+  })  : hoursController = TextEditingController(text: initialValue?.hours.toString()),
+        minutesController = TextEditingController(text: initialValue?.minutes.toString()),
+        secondsController = TextEditingController(text: initialValue?.seconds.toString()),
+        super(initialValue) {
     hoursController.addListener(notifyListeners);
     minutesController.addListener(notifyListeners);
     secondsController.addListener(notifyListeners);
   }
-
 
   @override
   final List<FormFieldValidator<Duration>>? validators;
@@ -168,32 +147,27 @@ class XDurationField extends XField<Duration> {
   final TextEditingController minutesController;
   final TextEditingController secondsController;
 
-
   notifyListeners() {
     for (final listener in _listeners) {
       listener.call(value);
     }
   }
-  
 
   @override
   bool hasChanged() {
     return value != initialValue;
   }
 
-
   @override
   void addListener(ValueChanged<Duration?> callback) {
     _listeners.add(callback);
   }
-
 
   @override
   void removeListener(ValueChanged<Duration?> callback) {
     _listeners.removeWhere((element) => element == callback);
   }
 
-  
   @override
   void setValue(Duration? newValue) {
     hoursController.text = newValue?.hours.toString() ?? '';
@@ -201,32 +175,25 @@ class XDurationField extends XField<Duration> {
     secondsController.text = newValue?.seconds.toString() ?? '';
     notifyListeners();
   }
-  
 
-  
   @override
   Duration? get value => Duration(
-    hours: int.tryParse(hoursController.text) ?? 0,
-    seconds: int.tryParse(secondsController.text) ?? 0,
-    minutes: int.tryParse(minutesController.text) ?? 0
-  );
+      hours: int.tryParse(hoursController.text) ?? 0,
+      seconds: int.tryParse(secondsController.text) ?? 0,
+      minutes: int.tryParse(minutesController.text) ?? 0);
 }
-
-
 
 class XDistanceField extends XField<DistanceFieldValue> {
   XDistanceField({
     DistanceFieldValue? initialValue,
     this.validators,
-  }) : valueController = TextEditingController(text: initialValue?.value?.toString()),
-       unit = initialValue?.unit,
-       super(initialValue)
-  {
+  })  : valueController = TextEditingController(text: initialValue?.value?.toString()),
+        unit = initialValue?.unit,
+        super(initialValue) {
     valueController.addListener(() {
       notifyListeners();
     });
   }
-
 
   final List<ValueChanged<DistanceFieldValue?>> _listeners = [];
   final TextEditingController valueController;
@@ -235,13 +202,11 @@ class XDistanceField extends XField<DistanceFieldValue> {
   @override
   final List<FormFieldValidator<DistanceFieldValue>>? validators;
 
-
   notifyListeners() {
     for (final listener in _listeners) {
       listener.call(value);
     }
   }
-
 
   @override
   void setValue(DistanceFieldValue? newValue) {
@@ -250,43 +215,33 @@ class XDistanceField extends XField<DistanceFieldValue> {
     notifyListeners();
   }
 
-
   @override
   bool hasChanged() {
     return value != initialValue;
   }
-
 
   @override
   void addListener(ValueChanged<DistanceFieldValue?> callback) {
     _listeners.add(callback);
   }
 
-
   @override
   void removeListener(ValueChanged<DistanceFieldValue?> callback) {
     _listeners.removeWhere((element) => element == callback);
   }
 
-
   @override
-  DistanceFieldValue get value => DistanceFieldValue(
-    value: double.tryParse(valueController.text),
-    unit: unit
-  );
+  DistanceFieldValue get value => DistanceFieldValue(value: double.tryParse(valueController.text), unit: unit);
 }
-
-
 
 class XLocationField extends XField<LatLng> {
   XLocationField({
     LatLng? initialValue,
     this.validators,
-  }) : _value = initialValue,
-       super(initialValue);
+  })  : _value = initialValue,
+        super(initialValue);
 
   final List<ValueChanged<LatLng?>> _listeners = [];
-
 
   @override
   List<FormFieldValidator<LatLng>>? validators;
@@ -320,21 +275,51 @@ class XLocationField extends XField<LatLng> {
   }
 }
 
+class XDateField extends XField<DateTime> {
+  XDateField({
+    DateTime? initialValue,
+    this.validators,
+  })  : _value = initialValue,
+        super(initialValue);
 
+  final List<ValueChanged<DateTime?>> _listeners = [];
 
+  @override
+  List<FormFieldValidator<DateTime>>? validators;
 
-enum EditionType {
-  create,
-  update
+  DateTime? _value;
+
+  @override
+  DateTime? get value => _value;
+
+  @override
+  void setValue(DateTime? newValue) {
+    _value = newValue;
+    for (final listener in _listeners) {
+      listener.call(value);
+    }
+  }
+
+  @override
+  void addListener(ValueChanged<DateTime?> callback) {
+    _listeners.add(callback);
+  }
+
+  @override
+  bool hasChanged() {
+    return initialValue != value;
+  }
+
+  @override
+  void removeListener(ValueChanged<DateTime?> callback) {
+    _listeners.removeWhere((element) => element == callback);
+  }
 }
 
- 
-
+enum EditionType { create, update }
 
 class XFormStateHelper {
-  XFormStateHelper({
-    required this.fields
-  }) {
+  XFormStateHelper({required this.fields}) {
     init();
   }
 
@@ -348,7 +333,6 @@ class XFormStateHelper {
   bool hasChanges = false;
   List<ValueChanged<bool>> hasChangesCallbacks = [];
 
-
   void init() {
     for (final field in fields) {
       _handleValidation(field, field.value);
@@ -360,7 +344,6 @@ class XFormStateHelper {
     }
   }
 
-  
   void _handleValidation(XField field, dynamic value) {
     final fieldErrors = field.errors();
     final previousFieldError = errors[field];
@@ -376,21 +359,19 @@ class XFormStateHelper {
     final newHasErrors = errors.isNotEmpty;
     if (hasErrors != newHasErrors) {
       hasErrors = newHasErrors;
-      
     }
   }
-
 
   void _handleChanges(XField field, dynamic value) {
     final fieldHasChanged = field.hasChanged();
     // final previousHasChanged = changes.contains(field);
     // if (fieldHasChanged != previousHasChanged) {
-      if (fieldHasChanged == true) {
-        changes.add(field);
-      } else {
-        changes.remove(field);
-      }
-      notifyChangesListeners();
+    if (fieldHasChanged == true) {
+      changes.add(field);
+    } else {
+      changes.remove(field);
+    }
+    notifyChangesListeners();
     // }
     final newHasChanges = changes.isNotEmpty;
     if (hasChanges != newHasChanges) {
@@ -398,15 +379,11 @@ class XFormStateHelper {
     }
   }
 
-
   bool get canSave => hasChanges && !hasErrors;
-
-
 
   void listenChanges(ValueChanged<bool> callback) {
     hasChangesCallbacks.add(callback);
   }
-
 
   void removeChangesListener(ValueChanged<bool> callback) {
     hasChangesCallbacks.remove(callback);
@@ -418,17 +395,14 @@ class XFormStateHelper {
     }
   }
 
-
   void listenErrors(ValueChanged<bool> callback) {
     hasErrorsCallbacks.add(callback);
   }
-
 
   void removeErrosListener(ValueChanged<bool> callback) {
     hasErrorsCallbacks.remove(callback);
   }
 
-  
   void notifyErrorsListeners() {
     for (final listener in hasErrorsCallbacks) {
       listener.call(hasErrors);

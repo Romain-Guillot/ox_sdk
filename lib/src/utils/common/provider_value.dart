@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ox_sdk/ox_sdk.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
-
 
 class ProviderValue<T, K> {
   ProviderValue({
     this.notify,
   });
-  
-  ProviderValue.fromValue(T value, {
+
+  ProviderValue.fromValue(
+    T value, {
     this.notify,
   }) {
     this.value = value;
@@ -23,6 +24,7 @@ class ProviderValue<T, K> {
     _error = null;
     notify?.call();
   }
+
   T? get value => _value;
   bool get hasData {
     if (value is Iterable) {
@@ -32,7 +34,6 @@ class ProviderValue<T, K> {
     }
   }
 
-
   K? _error;
   set error(K? error) {
     _error = error;
@@ -40,9 +41,9 @@ class ProviderValue<T, K> {
     _value = null;
     notify?.call();
   }
+
   K? get error => _error;
   bool get hasError => _error != null;
-
 
   bool? _initialized;
   bool get isInitialized => _initialized == true;
@@ -56,21 +57,19 @@ class ProviderValue<T, K> {
   }
 }
 
-
-
 /// [EmptyDataWidget]
 /// [ErrorDataWidget]
 /// [LoadingDataWidget]
 class ProviderValueBuilder<T, K> extends StatelessWidget {
-  const ProviderValueBuilder({
-    Key? key,
-    required this.value,
-    required this.dataBuilder,
-    this.errorBuilder,
-    this.loadingBuilder,
-    this.emptyDataBuilder,
-    this.isSliver = false
-  }) : super(key: key);
+  const ProviderValueBuilder(
+      {Key? key,
+      required this.value,
+      required this.dataBuilder,
+      this.errorBuilder,
+      this.loadingBuilder,
+      this.emptyDataBuilder,
+      this.isSliver = false})
+      : super(key: key);
 
   final ProviderValue<T, K> value;
 
@@ -84,65 +83,23 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
     if (value.hasError) {
-      child = errorBuilder != null 
-        ? errorBuilder!(context, value.error) 
-        : DefaultErrorWidget(error: value.error.toString());
+      child = errorBuilder != null ? errorBuilder!(context, value.error) : DefaultErrorWidget(error: value.error.toString());
     } else if (!value.isInitialized) {
-      child =  loadingBuilder != null 
-        ? loadingBuilder!(context) 
-        : const DefaultLoadingWidget();
+      child = loadingBuilder != null ? loadingBuilder!(context) : const OLoadingIndicator();
     } else if (emptyDataBuilder != null && !value.hasData) {
-      child = emptyDataBuilder != null 
-        ? emptyDataBuilder!.call(context) 
-        : const DefaultEmptyDataWidget(child: Text('no data'));
+      child = emptyDataBuilder != null ? emptyDataBuilder!.call(context) : const DefaultEmptyDataWidget(child: Text('no data'));
     } else {
       return dataBuilder(context, value.value!);
     }
     if (isSliver) {
-      child  = SliverToBoxAdapter(child: child);
+      child = SliverToBoxAdapter(child: child);
     }
     return child;
-
   }
 }
-
-
-class DefaultLoadingWidget extends StatelessWidget {
-  const DefaultLoadingWidget({
-    Key? key,
-    this.label
-  }) : super(key: key);
-
-  final Widget? label;
-
-  @override
-  Widget build(BuildContext context) {
-    return  Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const CircularProgressIndicator(),
-        if (label != null)
-          DefaultTextStyle.merge(
-            style: Theme.of(context).textTheme.bodyText1,
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: Theme.of(context).paddings.medium
-              ),
-              child: label
-            ),
-          )
-      ],
-    );
-  }
-}
-
 
 class DefaultErrorWidget extends StatelessWidget {
-  const DefaultErrorWidget({
-    Key? key,
-    required this.error
-  }) : super(key: key);
+  const DefaultErrorWidget({Key? key, required this.error}) : super(key: key);
 
   final String? error;
 
@@ -153,7 +110,6 @@ class DefaultErrorWidget extends StatelessWidget {
     );
   }
 }
-
 
 class DefaultEmptyDataWidget extends StatelessWidget {
   const DefaultEmptyDataWidget({
@@ -174,16 +130,13 @@ class DefaultEmptyDataWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          DefaultTextStyle.merge(
-            style: Theme.of(context).textTheme.caption,
-            child: child
-          ),
+          DefaultTextStyle.merge(style: Theme.of(context).textTheme.caption, child: child),
           const PaddingSpacer(),
           if (onRefresh != null)
             TextButton.icon(
               onPressed: onRefresh,
-              icon: const Icon(Icons.refresh), 
-              label: Text(refreshButtonLabel??'Refresh'),
+              icon: const Icon(Icons.refresh),
+              label: Text(refreshButtonLabel ?? 'Refresh'),
             )
         ],
       ),

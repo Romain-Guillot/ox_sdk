@@ -1,9 +1,5 @@
-class AppException implements Exception  {
-  const AppException({
-    required this.code,
-    this.innerException,
-    this.innerStackTrace
-  });
+class AppException implements Exception {
+  const AppException({required this.code, this.innerException, this.innerStackTrace});
 
   final int code;
   final dynamic innerException;
@@ -14,22 +10,14 @@ class AppException implements Exception  {
 }
 
 class AppExceptionDescription {
-  const AppExceptionDescription(
-    this.title,
-    [this.message]
-  );
+  const AppExceptionDescription(this.title, [this.message]);
 
   final String title;
   final String? message;
 }
 
-
 class ApiException implements Exception {
-  const ApiException({
-    required this.code,
-    this.innerException,
-    this.innerStackTrace
-  });
+  const ApiException({required this.code, this.innerException, this.innerStackTrace});
 
   final int code;
   final dynamic innerException;
