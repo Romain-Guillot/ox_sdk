@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
-
-
 const EdgeInsets kSnakbarDefaultMargin = EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0);
 
-
-
-ScaffoldFeatureController<SnackBar, SnackBarClosedReason>  showSuccessSnackbar({
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSuccessSnackbar({
   required BuildContext context,
   required Widget content,
   SnackBarAction? action,
@@ -20,14 +16,9 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>  showSuccessSnackbar({
     action: action,
     animation: animation,
     backgroundColor: Theme.of(context).colors.success,
-    content: DefaultTextStyle.merge(
-      style: TextStyle(color: Theme.of(context).colors.onSuccess),
-      child: content
-    ),
+    content: DefaultTextStyle.merge(style: TextStyle(color: Theme.of(context).colors.onSuccess), child: content),
   ));
 }
-
-
 
 ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackbar({
   required BuildContext context,
@@ -42,9 +33,6 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showErrorSnackbar({
     action: action,
     animation: animation,
     backgroundColor: Theme.of(context).colors.error,
-    content: DefaultTextStyle.merge(
-      style: TextStyle(color: Theme.of(context).colors.onError),
-      child: content
-    ),
+    content: DefaultTextStyle.merge(style: TextStyle(color: Theme.of(context).colors.onError), child: content),
   ));
 }

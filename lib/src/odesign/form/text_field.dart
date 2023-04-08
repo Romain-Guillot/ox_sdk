@@ -1,9 +1,7 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart';
-
 
 class OTextFormField extends StatelessWidget {
   const OTextFormField({
@@ -19,6 +17,8 @@ class OTextFormField extends StatelessWidget {
     this.minLines = 1,
     this.maxLines = 1,
     this.textCapitalization = TextCapitalization.none,
+    this.decorated = true,
+    this.decoration,
   }) : super(key: key);
 
   final XTextField field;
@@ -32,36 +32,45 @@ class OTextFormField extends StatelessWidget {
   final int minLines;
   final int maxLines;
   final TextCapitalization textCapitalization;
+  final InputDecoration? decoration;
+  final bool decorated;
 
   @override
   Widget build(BuildContext context) {
-    return OFormField(
-      label: label,
-      fieldSize: size,
-      layout: layout,
-      expandField: expandField,
-      errors: field.errors()?.map(Text.new).toList(),
-      child: Padding(
-        padding: minLines > 1 ? EdgeInsets.symmetric(
-          vertical: Theme.of(context).paddings.medium
-        ) : EdgeInsets.zero,
-        child: TextField(
-          controller: field.controller,
-          style: style,
-          textAlign: textAlign,
-          minLines: minLines,
-          textCapitalization: textCapitalization,
-          maxLines: max(maxLines, minLines),
-          decoration: InputDecoration(
+    final theme = Theme.of(context);
+
+    Widget child = TextField(
+      controller: field.controller,
+      style: style,
+      textAlign: textAlign,
+      minLines: minLines,
+      textCapitalization: textCapitalization,
+      maxLines: max(maxLines, minLines),
+      decoration: decoration?.copyWith(
             hintText: hint,
-            contentPadding: EdgeInsets.zero,
-            hintStyle: Theme.of(context).inputDecorationTheme.hintStyle?.copyWith(
-              fontSize: style?.fontSize
-            )
+            hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
+              fontSize: style?.fontSize,
+            ),
+          ) ??
+          InputDecoration(
+            hintText: hint,
           ),
-        ),
-      )
     );
+
+    if (decorated) {
+      child = OFormField(
+        label: label,
+        fieldSize: size,
+        layout: layout,
+        expandField: expandField,
+        errors: field.errors()?.map(Text.new).toList(),
+        child: Padding(
+          padding: minLines > 1 ? EdgeInsets.symmetric(vertical: Theme.of(context).paddings.medium) : EdgeInsets.zero,
+          child: child,
+        ),
+      );
+    }
+
+    return child;
   }
 }
-

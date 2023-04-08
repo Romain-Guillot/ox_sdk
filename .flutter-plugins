@@ -1,14 +1,13 @@
 # This is a generated file; do not edit or check into version control.
-file_picker=/home/ob/.pub-cache/hosted/pub.dartlang.org/file_picker-5.2.2/
-flutter_plugin_android_lifecycle=/home/ob/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
-package_info_plus=/home/ob/.pub-cache/hosted/pub.dartlang.org/package_info_plus-3.0.1/
-path_provider=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.11/
-path_provider_android=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.21/
-path_provider_ios=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.11/
-path_provider_linux=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.7/
-path_provider_macos=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.6/
-path_provider_windows=/home/ob/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.1.3/
-sentry_flutter=/home/ob/.pub-cache/hosted/pub.dartlang.org/sentry_flutter-6.13.1/
-wakelock=/home/ob/.pub-cache/hosted/pub.dartlang.org/wakelock-0.6.2/
-wakelock_macos=/home/ob/.pub-cache/hosted/pub.dartlang.org/wakelock_macos-0.4.0/
-wakelock_web=/home/ob/.pub-cache/hosted/pub.dartlang.org/wakelock_web-0.4.0/
+file_picker=/home/ob/.pub-cache/hosted/pub.dev/file_picker-5.2.6/
+flutter_plugin_android_lifecycle=/home/ob/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.9/
+package_info_plus=/home/ob/.pub-cache/hosted/pub.dev/package_info_plus-3.0.3/
+path_provider=/home/ob/.pub-cache/hosted/pub.dev/path_provider-2.0.14/
+path_provider_android=/home/ob/.pub-cache/hosted/pub.dev/path_provider_android-2.0.24/
+path_provider_foundation=/home/ob/.pub-cache/hosted/pub.dev/path_provider_foundation-2.2.1/
+path_provider_linux=/home/ob/.pub-cache/hosted/pub.dev/path_provider_linux-2.1.10/
+path_provider_windows=/home/ob/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.5/
+sentry_flutter=/home/ob/.pub-cache/hosted/pub.dev/sentry_flutter-6.22.0/
+wakelock=/home/ob/.pub-cache/hosted/pub.dev/wakelock-0.6.2/
+wakelock_macos=/home/ob/.pub-cache/hosted/pub.dev/wakelock_macos-0.4.0/
+wakelock_web=/home/ob/.pub-cache/hosted/pub.dev/wakelock_web-0.4.0/

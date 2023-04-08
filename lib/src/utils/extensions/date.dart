@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 enum DateFormatType {
   date,
   dateShort,
+  writtenDate,
   datetimeShort,
   datetimeFull,
 }
@@ -14,13 +15,16 @@ extension DateFormatExt on DateTime {
     final DateFormat effectiveDF;
     switch (type) {
       case DateFormatType.date:
-        effectiveDF=  DateFormat.yMd(locale);
+        effectiveDF = DateFormat.yMd(locale);
         break;
       case DateFormatType.dateShort:
-        effectiveDF=  DateFormat.MMMd(locale);
+        effectiveDF = DateFormat.MMMd(locale);
         break;
       case DateFormatType.datetimeFull:
         effectiveDF = DateFormat.yMd(locale).add_jms();
+        break;
+      case DateFormatType.writtenDate:
+        effectiveDF = DateFormat.yMMMd(locale);
         break;
       case DateFormatType.datetimeShort:
         effectiveDF = DateFormat.yMd(locale).add_jm();

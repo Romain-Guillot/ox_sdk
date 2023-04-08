@@ -8,12 +8,17 @@ abstract class XField<T> {
       : _initialValue = initialValue,
         history = [initialValue];
 
-  final T? _initialValue;
+  T? _initialValue;
   T? get initialValue => _initialValue;
 
   T? get value;
 
   List<FormFieldValidator<T>>? get validators;
+
+  void setInitialValue(T? initialValue) {
+    _initialValue = initialValue;
+    setValue(initialValue);
+  }
 
   void setValue(T? newValue);
 
