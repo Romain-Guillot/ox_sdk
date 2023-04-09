@@ -96,7 +96,7 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
     } else if (emptyDataBuilder != null && !value.hasData) {
       child = emptyDataBuilder!.call(context);
     } else {
-      return dataBuilder(context, value.value!);
+      return dataBuilder(context, value.value as T);
     }
     if (isSliver) {
       child = SliverToBoxAdapter(child: child);

@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
-
-enum OTitleType {
-  card, dialog
-}
+enum OTitleType { card, dialog }
 
 enum OTitleStyle {
   small,
   normal,
 }
 
-
 class OTitle extends StatelessWidget {
-  const OTitle({ 
+  const OTitle({
     Key? key,
     this.icon,
     required this.label,
     this.type = OTitleType.card,
-    this.style = OTitleStyle.normal
+    this.style = OTitleStyle.normal,
   }) : super(key: key);
 
   final Widget? icon;
@@ -36,33 +32,28 @@ class OTitle extends StatelessWidget {
             width: 40,
             child: Align(
               alignment: Alignment.centerLeft,
-              child: IconTheme(
-                data: IconThemeData(
-                  size: style.iconSize(context)
-                ),
-                child: icon!
+              child: IconTheme.merge(
+                data: IconThemeData(size: style.iconSize(context)),
+                child: icon!,
               ),
             ),
           ),
         DefaultTextStyle.merge(
-          style: type == OTitleType.card
-            ? style.titleStyle(context)
-            : Theme.of(context).textTheme.headlineSmall,
-          child: label
+          style: type == OTitleType.card ? style.titleStyle(context) : Theme.of(context).textTheme.headlineSmall,
+          child: label,
         ),
       ],
     );
   }
 }
 
-
 extension on OTitleStyle {
   double iconSize(BuildContext context) {
     switch (this) {
       case OTitleStyle.normal:
-        return 28;
+        return 24;
       case OTitleStyle.small:
-        return 20;
+        return 18;
     }
   }
 

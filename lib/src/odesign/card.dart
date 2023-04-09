@@ -2,33 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/themings/supporting_colors.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
-
 enum OCardType {
   main,
   component,
   expanded,
 }
 
-
 enum OCardFunction {
+  surface,
   primary,
   secondary,
   tertiary,
   error,
 }
 
+enum OCardDensity { small, medium, large }
 
-enum OCardDensity {
-  small,
-  medium,
-  large
-}
-
-
-enum OCardStyle {
-  normal,
-  highlight
-}
+enum OCardStyle { normal, highlight }
 
 extension on OCardFunction {
   Color backgroundColor(BuildContext context) {
@@ -41,6 +31,8 @@ extension on OCardFunction {
         return Theme.of(context).colorScheme.errorContainer;
       case OCardFunction.tertiary:
         return Theme.of(context).colorScheme.tertiaryContainer;
+      case OCardFunction.surface:
+        return Theme.of(context).colorScheme.surface;
     }
   }
 
@@ -54,34 +46,34 @@ extension on OCardFunction {
         return Theme.of(context).colorScheme.onErrorContainer;
       case OCardFunction.tertiary:
         return Theme.of(context).colorScheme.onTertiaryContainer;
+      case OCardFunction.surface:
+        return Theme.of(context).colorScheme.onSurface;
     }
   }
 }
 
-
-
 class OCard extends StatelessWidget {
-  const OCard({ 
-    Key? key,
-    this.title,
-    this.type = OCardType.component,
-    this.actions,
-    required this.child,
-    this.elevation,
-    this.function = OCardFunction.primary,
-    this.mainAxisSize = MainAxisSize.min,
-    this.hasContentPadding = false,
-    this.onTap,
-    this.expand = false,
-    this.supporting,
-    this.centerTitle = false,
-    this.density = OCardDensity.medium,
-    this.supportingStyle = OCardStyle.normal,
-    this.clip = Clip.antiAliasWithSaveLayer,
-    this.contentPadding,
-    this.onLongPress,
-    this.fullWidth = false
-  }) : super(key: key);
+  const OCard(
+      {Key? key,
+      this.title,
+      this.type = OCardType.component,
+      this.actions,
+      required this.child,
+      this.elevation,
+      this.function = OCardFunction.primary,
+      this.mainAxisSize = MainAxisSize.min,
+      this.hasContentPadding = false,
+      this.onTap,
+      this.expand = false,
+      this.supporting,
+      this.centerTitle = false,
+      this.density = OCardDensity.medium,
+      this.supportingStyle = OCardStyle.normal,
+      this.clip = Clip.antiAliasWithSaveLayer,
+      this.contentPadding,
+      this.onLongPress,
+      this.fullWidth = false})
+      : super(key: key);
 
   final Widget? title;
   final OCardType type;
@@ -113,7 +105,7 @@ class OCard extends StatelessWidget {
         padding = Theme.of(context).paddings.medium;
         break;
       case OCardDensity.large:
-      padding = Theme.of(context).paddings.big;
+        padding = Theme.of(context).paddings.big;
         break;
     }
     BorderRadius radius;
@@ -122,10 +114,7 @@ class OCard extends StatelessWidget {
         radius = Theme.of(context).radiuses.medium;
         break;
       case OCardType.main:
-        radius = BorderRadius.only(
-          topLeft: Theme.of(context).radiuses.medium.topLeft,
-          topRight: Theme.of(context).radiuses.medium.topRight
-        );
+        radius = BorderRadius.only(topLeft: Theme.of(context).radiuses.medium.topLeft, topRight: Theme.of(context).radiuses.medium.topRight);
         break;
       case OCardType.expanded:
         radius = BorderRadius.zero;
@@ -134,9 +123,7 @@ class OCard extends StatelessWidget {
     Widget _child = child;
     if (hasContentPadding) {
       _child = Padding(
-        padding: hasContentPadding
-          ? (contentPadding ?? EdgeInsets.all(padding)).copyWith(top: title == null ? null : 0)
-          : EdgeInsets.zero,
+        padding: hasContentPadding ? (contentPadding ?? EdgeInsets.all(padding)).copyWith(top: title == null ? null : 0) : EdgeInsets.zero,
         child: _child,
       );
     }
@@ -147,7 +134,6 @@ class OCard extends StatelessWidget {
       );
     }
 
-
     final supportingColors = Theme.of(context).colors.supportings[supporting];
     Color cardColor;
     Color foregroundColor;
@@ -157,18 +143,14 @@ class OCard extends StatelessWidget {
         case OCardStyle.highlight:
           cardColor = supportingColors.primary;
           foregroundColor = supportingColors.onPrimary;
-          buttonStyle = TextButton.styleFrom(
-            primary: supportingColors.onVariant,
-            backgroundColor: supportingColors.variant
-          ).merge(Theme.of(context).textButtonTheme.style);
+          buttonStyle = TextButton.styleFrom(primary: supportingColors.onVariant, backgroundColor: supportingColors.variant)
+              .merge(Theme.of(context).textButtonTheme.style);
           break;
         case OCardStyle.normal:
           cardColor = supportingColors.container;
           foregroundColor = supportingColors.onContainer;
-          buttonStyle = TextButton.styleFrom(
-            primary: supportingColors.container,
-            backgroundColor: supportingColors.onContainer
-          ).merge(Theme.of(context).textButtonTheme.style);
+          buttonStyle = TextButton.styleFrom(primary: supportingColors.container, backgroundColor: supportingColors.onContainer)
+              .merge(Theme.of(context).textButtonTheme.style);
           break;
       }
     } else {
@@ -183,13 +165,8 @@ class OCard extends StatelessWidget {
       clipBehavior: clip,
       child: Theme(
         data: Theme.of(context).copyWith(
-          textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: foregroundColor,
-            displayColor: foregroundColor
-          ),
-          textButtonTheme: TextButtonThemeData(
-          style: buttonStyle
-          ),
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: foregroundColor, displayColor: foregroundColor),
+          textButtonTheme: TextButtonThemeData(style: buttonStyle),
         ),
         child: Builder(
           builder: (context) => InkWell(
@@ -197,53 +174,42 @@ class OCard extends StatelessWidget {
             onLongPress: onLongPress,
             child: SizedBox(
               width: fullWidth ? double.maxFinite : null,
-              child: DefaultTextStyle.merge(
-                style: TextStyle(color: foregroundColor),
-                child: Column(
-                  mainAxisSize: mainAxisSize,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (title != null || actions != null)
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: padding
-                        ),
-                        child: Row(
-                          children: [
-                          Expanded(
-                            child: title != null 
-                              ? Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: padding
-                                  ),
-                                  child: DefaultTextStyle.merge(
-                                    style: Theme.of(context).textTheme.titleMedium,
-                                    textAlign: centerTitle ? TextAlign.center : TextAlign.left,
-                                    child: Align(
-                                      alignment: centerTitle ? Alignment.center : Alignment.centerLeft,
-                                      child: title!
-                                    )
-                                  )
-                                )
-                              : Container()
+              child: IconTheme.merge(
+                data: IconThemeData(color: foregroundColor),
+                child: DefaultTextStyle.merge(
+                  style: TextStyle(color: foregroundColor),
+                  child: Column(
+                    mainAxisSize: mainAxisSize,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (title != null || actions != null)
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: padding),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: title != null
+                                      ? Padding(
+                                          padding: EdgeInsets.symmetric(vertical: padding),
+                                          child: DefaultTextStyle.merge(
+                                              style: Theme.of(context).textTheme.titleMedium,
+                                              textAlign: centerTitle ? TextAlign.center : TextAlign.left,
+                                              child: Align(alignment: centerTitle ? Alignment.center : Alignment.centerLeft, child: title!)))
+                                      : Container()),
+                              if (actions != null)
+                                ...actions!.map((action) {
+                                  final isLastAction = actions!.last == action;
+                                  return Padding(
+                                    padding: EdgeInsets.only(right: !isLastAction ? (Theme.of(context).paddings.small) : 0),
+                                    child: action,
+                                  );
+                                })
+                            ],
                           ),
-                          if (actions != null)
-                            ...actions!.map((action) {
-                              final isLastAction = actions!.last == action;
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                  right: !isLastAction 
-                                    ? (Theme.of(context).paddings.small)
-                                    : 0
-                                ),
-                                child: action,
-                              );
-                            })
-                        ],
-                                          ),
-                      ),
-                    _child
-                  ],
+                        ),
+                      _child
+                    ],
+                  ),
                 ),
               ),
             ),
