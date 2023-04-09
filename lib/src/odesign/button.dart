@@ -298,3 +298,69 @@ class OFilledButton extends StatelessWidget {
     }
   }
 }
+
+class OTextButton extends StatelessWidget {
+  const OTextButton({
+    super.key,
+    required this.onPressed,
+    this.onLongPress,
+    this.onHover,
+    this.onFocusChange,
+    this.style,
+    this.focusNode,
+    this.autofocus = false,
+    this.clipBehavior = Clip.none,
+    this.statesController,
+    this.loading = false,
+    this.enabled = true,
+    this.icon,
+    required this.label,
+  });
+
+  final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
+  final ValueChanged<bool>? onHover;
+  final ValueChanged<bool>? onFocusChange;
+  final ButtonStyle? style;
+  final FocusNode? focusNode;
+  final bool autofocus;
+  final Clip clipBehavior;
+  final MaterialStatesController? statesController;
+  final bool loading;
+  final bool enabled;
+  final Widget? icon;
+  final Widget label;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? effectiveIcon = loading ? const OLoader(size: OLoaderSize.small) : icon;
+    if (effectiveIcon == null) {
+      return TextButton(
+        onPressed: enabled && onPressed != null ? () => onPressed?.call() : null,
+        onLongPress: enabled && onPressed != null ? () => onLongPress?.call() : null,
+        onHover: onHover,
+        onFocusChange: onFocusChange,
+        style: style,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        clipBehavior: clipBehavior,
+        statesController: statesController,
+        child: label,
+      );
+    } else {
+      return TextButton.icon(
+        onPressed: enabled && onPressed != null ? () => onPressed?.call() : null,
+        onLongPress: enabled && onPressed != null ? () => onLongPress?.call() : null,
+        onHover: onHover,
+        onFocusChange: onFocusChange,
+        style: style,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        clipBehavior: clipBehavior,
+        statesController: statesController,
+        icon: effectiveIcon,
+        label: label,
+      );
+    }
+  }
+}

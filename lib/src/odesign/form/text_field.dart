@@ -39,6 +39,8 @@ class OTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final fieldErros = field.errors();
+
     Widget child = TextField(
       controller: field.controller,
       style: style,
@@ -47,11 +49,11 @@ class OTextFormField extends StatelessWidget {
       textCapitalization: textCapitalization,
       maxLines: max(maxLines, minLines),
       decoration: decoration?.copyWith(
-            hintText: hint,
-            hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
-              fontSize: style?.fontSize,
-            ),
-          ) ??
+              hintText: hint,
+              hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
+                fontSize: style?.fontSize,
+              ),
+              errorText: decorated == false ? fieldErros?.firstOrNull : null) ??
           InputDecoration(
             hintText: hint,
           ),
@@ -63,7 +65,7 @@ class OTextFormField extends StatelessWidget {
         fieldSize: size,
         layout: layout,
         expandField: expandField,
-        errors: field.errors()?.map(Text.new).toList(),
+        errors: fieldErros?.map(Text.new).toList(),
         child: Padding(
           padding: minLines > 1 ? EdgeInsets.symmetric(vertical: Theme.of(context).paddings.medium) : EdgeInsets.zero,
           child: child,

@@ -55,6 +55,7 @@ export 'src/odesign/tooltip.dart';
 export 'src/odesign/app_bar.dart';
 export 'src/odesign/loader.dart';
 export 'src/odesign/loading_indicator.dart';
+export 'src/odesign/notification_badge.dart';
 
 export 'src/utils/common/app_exception.dart';
 export 'src/utils/common/call_api_or_throw.dart';

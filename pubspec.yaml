@@ -32,6 +32,8 @@ dependencies:
   collection: ^1.16.0
   go_router: ^6.5.0
   recase: ^4.1.0
+  badges: ^3.0.3
+
 
 
 dev_dependencies:

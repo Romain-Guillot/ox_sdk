@@ -61,15 +61,16 @@ class ProviderValue<T, K> {
 /// [ErrorDataWidget]
 /// [LoadingDataWidget]
 class ProviderValueBuilder<T, K> extends StatelessWidget {
-  const ProviderValueBuilder(
-      {Key? key,
-      required this.value,
-      required this.dataBuilder,
-      this.errorBuilder,
-      this.loadingBuilder,
-      this.emptyDataBuilder,
-      this.isSliver = false})
-      : super(key: key);
+  const ProviderValueBuilder({
+    Key? key,
+    required this.value,
+    required this.dataBuilder,
+    this.errorBuilder,
+    this.loadingBuilder,
+    this.emptyDataBuilder,
+    this.isSliver = false,
+    this.refreshButton,
+  }) : super(key: key);
 
   final ProviderValue<T, K> value;
 
@@ -78,16 +79,22 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
   final Widget Function(BuildContext context, K? error)? errorBuilder;
   final Widget Function(BuildContext context, T value) dataBuilder;
   final Widget Function(BuildContext context)? emptyDataBuilder;
+  final Widget? refreshButton;
 
   @override
   Widget build(BuildContext context) {
     Widget child;
     if (value.hasError) {
-      child = errorBuilder != null ? errorBuilder!(context, value.error) : DefaultErrorWidget(error: value.error.toString());
+      child = errorBuilder != null
+          ? errorBuilder!(context, value.error)
+          : DefaultErrorWidget(
+              refreshButton: refreshButton,
+              error: value.error.toString(),
+            );
     } else if (!value.isInitialized) {
       child = loadingBuilder != null ? loadingBuilder!(context) : const OLoadingIndicator();
     } else if (emptyDataBuilder != null && !value.hasData) {
-      child = emptyDataBuilder != null ? emptyDataBuilder!.call(context) : const DefaultEmptyDataWidget(child: Text('no data'));
+      child = emptyDataBuilder!.call(context);
     } else {
       return dataBuilder(context, value.value!);
     }
@@ -99,14 +106,32 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
 }
 
 class DefaultErrorWidget extends StatelessWidget {
-  const DefaultErrorWidget({Key? key, required this.error}) : super(key: key);
+  const DefaultErrorWidget({
+    Key? key,
+    required this.error,
+    this.refreshButton,
+  }) : super(key: key);
 
   final String? error;
+  final Widget? refreshButton;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(error!),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(
+            child: Text(error!),
+          ),
+          if (refreshButton != null) ...[
+            const PaddingSpacer(),
+            refreshButton!,
+          ]
+        ],
+      ),
     );
   }
 }
@@ -115,13 +140,11 @@ class DefaultEmptyDataWidget extends StatelessWidget {
   const DefaultEmptyDataWidget({
     Key? key,
     required this.child,
-    this.refreshButtonLabel,
-    this.onRefresh,
+    this.button,
   }) : super(key: key);
 
   final Widget child;
-  final String? refreshButtonLabel;
-  final VoidCallback? onRefresh;
+  final Widget? button;
 
   @override
   Widget build(BuildContext context) {
@@ -129,15 +152,14 @@ class DefaultEmptyDataWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          DefaultTextStyle.merge(style: Theme.of(context).textTheme.caption, child: child),
-          const PaddingSpacer(),
-          if (onRefresh != null)
-            TextButton.icon(
-              onPressed: onRefresh,
-              icon: const Icon(Icons.refresh),
-              label: Text(refreshButtonLabel ?? 'Refresh'),
-            )
+          DefaultTextStyle.merge(
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center,
+            child: child,
+          ),
+          if (button != null) ...[PaddingSpacer.small(), button!]
         ],
       ),
     );

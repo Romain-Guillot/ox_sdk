@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/xframework/form/form.dart';
 
-
 abstract class XFormChangeNotifier<T> extends ChangeNotifier {
   XFormChangeNotifier(this.initialValue);
 
-  
   init() {
     helper.listenChanges((value) {
       notifyListeners();
@@ -18,20 +16,17 @@ abstract class XFormChangeNotifier<T> extends ChangeNotifier {
 
   T? initialValue;
 
-  late XFormStateHelper helper;
+  XFormStateHelper get helper;
 
   EditionType get editionType {
-    return initialValue == null 
-      ? EditionType.create
-      : EditionType.update;
-  } 
+    return initialValue == null ? EditionType.create : EditionType.update;
+  }
 
-  bool hasChanges() => helper.hasChanges;
+  bool get hasChanges => helper.hasChanges;
 
-  bool hasErrors() => helper.hasErrors;
+  bool get hasErrors => helper.hasErrors;
 
-  bool canSave() => helper.canSave;
+  bool get canSave => helper.canSave;
 
   T? build();
-  
 }
