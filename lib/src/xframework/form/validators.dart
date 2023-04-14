@@ -1,6 +1,17 @@
 class XValidators {
   const XValidators._();
 
+  static String? selectLimit<T>(List<T>? value, {int? min, int? max}) {
+    if (value != null && min != null && value.length < min) {
+      return 'Minimum length: $min';
+    }
+    if (value != null && max != null && value.length > max) {
+      return 'Maximum length: $max';
+    }
+
+    return null;
+  }
+
   static String? mandatory<T>(T value) {
     if (value == null) {
       return 'Field mandatory';

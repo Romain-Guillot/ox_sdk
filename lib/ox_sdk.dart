@@ -25,6 +25,7 @@ export 'src/odesign/form/field_wrapper.dart';
 export 'src/odesign/form/distance_field.dart';
 export 'src/odesign/form/durantion_field.dart';
 export 'src/odesign/form/date_field.dart';
+export 'src/odesign/form/select_list_field.dart';
 
 export 'src/odesign/layouts/dismissible_header.layout.dart';
 export 'src/odesign/layouts/loading.page.dart';

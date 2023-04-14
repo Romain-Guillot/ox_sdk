@@ -130,6 +130,65 @@ class XRadioListField<T> extends XField<T> {
   }
 }
 
+class XSelectListField<T> extends XField<List<T>> {
+  XSelectListField({
+    List<T>? initialValue,
+    this.validators,
+  })  : _value = initialValue,
+        super(initialValue);
+
+  final List<ValueChanged<List<T>?>> _listeners = [];
+
+  @override
+  List<FormFieldValidator<List<T>>>? validators;
+
+  List<T>? _value;
+
+  @override
+  List<T>? get value => _value;
+
+  void addItem(T item) {
+    setValue([
+      if (value != null) ...value!,
+      item,
+    ]);
+  }
+
+  bool hasItem(T item) {
+    return value?.contains(item) == true;
+  }
+
+  void removeItem(T item) {
+    if (value != null) {
+      final newValue = List.from(value!).cast<T>()..remove(item);
+      setValue(newValue);
+    }
+  }
+
+  @override
+  void setValue(List<T>? newValue) {
+    _value = newValue;
+    for (final listener in _listeners) {
+      listener.call(value);
+    }
+  }
+
+  @override
+  void addListener(ValueChanged<List<T>?> callback) {
+    _listeners.add(callback);
+  }
+
+  @override
+  bool hasChanged() {
+    return initialValue != value;
+  }
+
+  @override
+  void removeListener(ValueChanged<List<T>?> callback) {
+    _listeners.removeWhere((element) => element == callback);
+  }
+}
+
 class XDurationField extends XField<Duration> {
   XDurationField({
     Duration? initialValue,
