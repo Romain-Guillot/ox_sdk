@@ -212,9 +212,11 @@ class _OCardState extends State<OCard> {
                     children: [
                       if (widget.title != null || widget.actions != null)
                         InkWell(
-                          onTap: () {
-                            collapsed = !collapsed;
-                          },
+                          onTap: widget.expandable
+                              ? () {
+                                  collapsed = !collapsed;
+                                }
+                              : null,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: padding),
                             child: Row(
