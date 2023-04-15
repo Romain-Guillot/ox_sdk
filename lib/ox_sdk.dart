@@ -90,6 +90,8 @@ export 'src/utils/extensions/date.dart';
 export 'src/utils/extensions/edge_insets.ext.dart';
 export 'src/utils/extensions/enum.extension.dart';
 export 'src/utils/extensions/intersperse_extensions.dart';
+export 'src/utils/extensions/locale.extension.dart';
+export 'src/utils/extensions/string.extension.dart';
 
 export 'src/xframework/form/change_notifier.dart';
 export 'src/xframework/form/form.dart';
