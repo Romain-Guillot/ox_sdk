@@ -38,10 +38,12 @@ class OTitle extends StatelessWidget {
               ),
             ),
           ),
-        DefaultTextStyle.merge(
-          style: type == OTitleType.card ? style.titleStyle(context) : Theme.of(context).textTheme.headlineSmall,
-          child: label,
-        ),
+        Expanded(
+          child: DefaultTextStyle.merge(
+            style: type == OTitleType.card ? style.titleStyle(context) : Theme.of(context).textTheme.headlineSmall,
+            child: label,
+          ),
+        )
       ],
     );
   }

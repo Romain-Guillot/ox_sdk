@@ -17,6 +17,7 @@ class ONotificationBadge extends StatelessWidget {
     final theme = Theme.of(context);
 
     return badges.Badge(
+      ignorePointer: true,
       position: badges.BadgePosition.topEnd(
         end: 3,
         top: 3,
