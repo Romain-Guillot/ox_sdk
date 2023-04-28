@@ -3,7 +3,10 @@ import 'package:ox_sdk/ox_sdk.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
 class OLoadingIndicator extends StatelessWidget {
-  const OLoadingIndicator({super.key, this.label});
+  const OLoadingIndicator({
+    super.key,
+    this.label,
+  });
 
   final Widget? label;
 

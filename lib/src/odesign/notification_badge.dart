@@ -27,11 +27,12 @@ class ONotificationBadge extends StatelessWidget {
         badgeColor: theme.colors.error,
       ),
       badgeContent: IconTheme.merge(
-          data: IconThemeData(
-            size: 14,
-            color: theme.colors.onError,
-          ),
-          child: notification),
+        data: IconThemeData(
+          size: 14,
+          color: theme.colors.onError,
+        ),
+        child: notification,
+      ),
       child: child,
     );
   }

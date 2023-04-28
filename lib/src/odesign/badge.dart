@@ -2,50 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
-
-enum OBadgeShape {
-  circle,
-  square,
-  none
-}
-
+enum OBadgeShape { circle, square, none }
 
 enum OBadgeStyle {
   flat,
   filled,
 }
 
-enum OBadgeDensity {
-  normal,
-  compact
-}
+enum OBadgeDensity { normal, compact }
 
 extension on OBadgeDensity {
   EdgeInsets padding(BuildContext context) {
     switch (this) {
       case OBadgeDensity.compact:
         return EdgeInsets.all(Theme.of(context).paddings.tiny);
-      case OBadgeDensity.normal: 
+      case OBadgeDensity.normal:
         return EdgeInsets.all(Theme.of(context).paddings.small);
     }
   }
 }
 
 class OBadge extends StatelessWidget {
-  const OBadge({ 
-    Key? key,
-    this.color,
-    this.variant,
-    this.label,
-    this.onTap,
-    this.shape = OBadgeShape.circle,
-    this.style = OBadgeStyle.flat,
-    this.selected = false,
-    this.padding,
-    this.trailing,
-    this.leading,
-    this.density = OBadgeDensity.normal
-  }) : super(key: key);
+  const OBadge(
+      {Key? key,
+      this.color,
+      this.variant,
+      this.label,
+      this.onTap,
+      this.shape = OBadgeShape.circle,
+      this.style = OBadgeStyle.flat,
+      this.selected = false,
+      this.padding,
+      this.trailing,
+      this.leading,
+      this.density = OBadgeDensity.normal})
+      : super(key: key);
 
   final Color? color;
   final Color? variant;
@@ -74,7 +65,7 @@ class OBadge extends StatelessWidget {
         break;
       case OBadgeStyle.flat:
         backgroundColor = selected ? color : Colors.transparent;
-        foregroundColor = selected ? variant : null;
+        foregroundColor = selected ? variant : color;
         iconColor = selected ? variant : color;
         effectivePadding = padding ?? density.padding(context);
         break;
@@ -84,11 +75,8 @@ class OBadge extends StatelessWidget {
       color: backgroundColor ?? Colors.transparent,
       borderRadius: radius,
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: IconTheme(
-        data: IconThemeData(
-          color: foregroundColor,
-          size: 18
-        ),
+      child: IconTheme.merge(
+        data: IconThemeData(color: foregroundColor, size: 18),
         child: InkWell(
           onTap: onTap,
           child: Padding(
@@ -96,18 +84,15 @@ class OBadge extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (leading != null)...[
-                  leading!, PaddingSpacer.small()],
-                if (shape != OBadgeShape.none && leading == null && iconColor != null)...[
+                if (leading != null) ...[leading!, PaddingSpacer.small()],
+                if (shape != OBadgeShape.none && leading == null && iconColor != null) ...[
                   Container(
                     constraints: BoxConstraints(
                       maxHeight: label == null ? 20 : 12,
                       maxWidth: label == null ? 20 : 12,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: shape == OBadgeShape.circle
-                        ? BorderRadius.circular(9999)
-                        : Theme.of(context).radiuses.tiny,
+                      borderRadius: shape == OBadgeShape.circle ? BorderRadius.circular(9999) : Theme.of(context).radiuses.tiny,
                       color: iconColor,
                     ),
                     child: const SizedBox.expand(),
@@ -116,20 +101,22 @@ class OBadge extends StatelessWidget {
                 ],
                 if (label != null)
                   Flexible(
-                    child:  DefaultTextStyle.merge(
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: foregroundColor,
-                      ), 
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      child: label!
-                    ),
+                    child: DefaultTextStyle.merge(
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: foregroundColor,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        child: label!),
                   ),
-                if (trailing != null)...[
+                if (trailing != null) ...[
                   PaddingSpacer.small(),
-                  trailing!,
+                  SizedBox.square(
+                    dimension: 18.0,
+                    child: trailing!,
+                  ),
                 ]
               ],
             ),
