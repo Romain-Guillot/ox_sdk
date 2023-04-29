@@ -33,6 +33,10 @@ dependencies:
   go_router: ^6.5.0
   recase: ^4.1.0
   badges: ^3.0.3
+  device_info_plus: ^8.2.2
+  battery_plus: ^3.0.6
+  share_plus: ^6.3.4
+  permission_handler: ^10.2.0
 
 
 

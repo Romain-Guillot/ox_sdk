@@ -6,36 +6,25 @@ import 'package:ox_sdk/src/utils/common/app_exception.dart';
 import 'package:ox_sdk/src/utils/common/cyclic_list.dart';
 import 'package:ox_sdk/src/utils/common/sentry_output.dart';
 
-
 class LogEntry {
-  const LogEntry( this.level, this.message, [this.exception, this.stacktrace]);
+  const LogEntry(this.emitter, this.level, this.message, [this.exception, this.stacktrace]);
 
+  final String emitter;
   final Level level;
   final dynamic message;
   final dynamic exception;
   final dynamic stacktrace;
 }
 
-
 abstract class XLogger {
-  XLogger({
-    Type? context,
-    String? contextStr,
-    LogOutput? logOutput,
-    Level logLevel = Level.verbose
-  }) : assert(context != null || contextStr != null),
-       _context = context == null ? contextStr! : (context).toString(),
-       _logger = Logger(
-          filter: logOutput == null ? DevelopmentFilter() : ProductionFilter(),
-          level: logLevel,
-          printer: PrettyPrinter(
-            printEmojis: false,
-            printTime: false,
-            methodCount: 10,
-            noBoxingByDefault: true
-          ),
-          output: logOutput
-       );
+  XLogger({Type? context, String? contextStr, LogOutput? logOutput, Level logLevel = Level.verbose})
+      : assert(context != null || contextStr != null),
+        _context = context == null ? contextStr! : (context).toString(),
+        _logger = Logger(
+            filter: logOutput == null ? DevelopmentFilter() : ProductionFilter(),
+            level: logLevel,
+            printer: PrettyPrinter(printEmojis: false, printTime: false, methodCount: 10, noBoxingByDefault: true),
+            output: logOutput);
 
   final String _context;
   final Logger _logger;
@@ -56,68 +45,61 @@ abstract class XLogger {
 
   /// Log a message at level [Level.verbose].
   void v(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.verbose, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.verbose, message, error, stackTrace));
     _logger.v(formatMessage(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.debug].
   void d(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.debug, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.debug, message, error, stackTrace));
     _logger.d(formatMessage(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.info].
   void i(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.info, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.info, message, error, stackTrace));
     _logger.i(formatMessage(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.warning].
   void w(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.warning, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.warning, message, error, stackTrace));
     _logger.w(formatMessage(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.error].
   void e(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.error, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.error, message, error, stackTrace));
     _logger.e(formatMessage(message), error, stackTrace);
   }
 
   /// Log a message at level [Level.wtf].
   void wtf(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    lastEntries.add(LogEntry(Level.wtf, message, error, stackTrace));
+    lastEntries.add(LogEntry(_context, Level.wtf, message, error, stackTrace));
     _logger.wtf(formatMessage(message), error, stackTrace);
   }
-
-
 
   String formatMessage(dynamic message) {
     return '$_context > $message';
   }
 }
 
-
 class XLoggerImpl extends XLogger {
   XLoggerImpl({
     Type? context,
     String? contextStr,
   }) : super(
-    context: context,
-    contextStr: contextStr,
-    logLevel: logLevel,
-    logOutput: output,
-  );
+          context: context,
+          contextStr: contextStr,
+          logLevel: logLevel,
+          logOutput: output,
+        );
 
   static LogOutput? output;
   static Level logLevel = Level.debug;
 }
 
-
-
 typedef AppWrapper = Function(FutureOr<void> Function());
-
-
 
 AppWrapper configureLogger({
   required bool useSentry,
@@ -126,9 +108,7 @@ AppWrapper configureLogger({
 }) {
   SentryLogOutput? sentryOuput;
   if (useSentry) {
-     sentryOuput = SentryLogOutput(
-      baseUrl: sentryURL
-    );
+    sentryOuput = SentryLogOutput(baseUrl: sentryURL);
     XLoggerImpl.output = sentryOuput;
   }
   XLoggerImpl.logLevel = level;

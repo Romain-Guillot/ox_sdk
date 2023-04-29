@@ -93,6 +93,9 @@ export 'src/utils/extensions/intersperse_extensions.dart';
 export 'src/utils/extensions/locale.extension.dart';
 export 'src/utils/extensions/string.extension.dart';
 
+export 'src/utils/developper_info/device_info.dart';
+export 'src/utils/developper_info/device_info.service.dart';
+
 export 'src/xframework/form/change_notifier.dart';
 export 'src/xframework/form/form.dart';
 export 'src/xframework/form/validators.dart';

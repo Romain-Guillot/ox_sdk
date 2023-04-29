@@ -58,7 +58,7 @@ class OCard extends StatefulWidget {
     this.title,
     this.type = OCardType.component,
     this.actions,
-    required this.child,
+    this.child,
     this.elevation,
     this.function = OCardFunction.primary,
     this.mainAxisSize = MainAxisSize.min,
@@ -80,7 +80,7 @@ class OCard extends StatefulWidget {
   final Widget? title;
   final OCardType type;
   final List<Widget>? actions;
-  final Widget child;
+  final Widget? child;
   final double? elevation;
   final OCardFunction function;
   final MainAxisSize mainAxisSize;
@@ -143,14 +143,21 @@ class _OCardState extends State<OCard> {
         radius = BorderRadius.zero;
         break;
     }
-    Widget effectiveChild = widget.child;
-    if (widget.hasContentPadding) {
-      effectiveChild = Padding(
-        padding: widget.hasContentPadding
-            ? (widget.contentPadding ?? EdgeInsets.all(padding)).copyWith(top: widget.title == null ? null : 0)
-            : EdgeInsets.zero,
-        child: effectiveChild,
-      );
+
+    Widget? child = widget.child;
+    Widget effectiveChild;
+    if (child == null) {
+      effectiveChild = const SizedBox.shrink();
+    } else {
+      effectiveChild = child;
+      if (widget.hasContentPadding) {
+        effectiveChild = Padding(
+          padding: widget.hasContentPadding
+              ? (widget.contentPadding ?? EdgeInsets.all(padding)).copyWith(top: widget.title == null ? null : 0)
+              : EdgeInsets.zero,
+          child: effectiveChild,
+        );
+      }
     }
 
     if (widget.expand) {
