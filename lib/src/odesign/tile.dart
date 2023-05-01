@@ -15,6 +15,7 @@ class OTile extends StatelessWidget {
     this.actions,
     this.onTap,
     this.density = OTileDensity.normal,
+    this.trailing,
   }) : super(key: key);
 
   final Widget? leading;
@@ -22,6 +23,7 @@ class OTile extends StatelessWidget {
   final List<Widget>? actions;
   final VoidCallback? onTap;
   final OTileDensity density;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class OTile extends StatelessWidget {
               ),
             PaddingSpacer.small(),
             Expanded(child: Align(alignment: Alignment.centerLeft, child: child)),
+            if (trailing != null) Flexible(child: trailing!),
             if (actions != null) ...[
               const PaddingSpacer(),
               ...actions!
