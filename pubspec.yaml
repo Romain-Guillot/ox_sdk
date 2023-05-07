@@ -37,6 +37,8 @@ dependencies:
   battery_plus: ^3.0.6
   share_plus: ^6.3.4
   permission_handler: ^10.2.0
+  confetti: ^0.7.0
+  package_info_plus: ^3.1.2
 
 
 

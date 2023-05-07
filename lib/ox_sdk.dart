@@ -13,7 +13,6 @@ export 'package:file_picker/file_picker.dart';
 export 'package:json_annotation/json_annotation.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:collection/collection.dart';
-export 'package:dio/dio.dart';
 export 'package:go_router/go_router.dart';
 export 'package:recase/recase.dart';
 export 'package:permission_handler/permission_handler.dart';
@@ -85,6 +84,7 @@ export 'src/utils/components/padding_spacer.dart';
 export 'src/utils/components/wave_lock.component.dart';
 export 'src/utils/components/sliver_list_view.dart';
 export 'src/utils/components/provider_event_builder.dart';
+export 'src/utils/components/app_version_info.dart';
 
 export 'src/utils/extensions/list.ext.dart';
 export 'src/utils/extensions/num.ext.dart';
