@@ -148,6 +148,8 @@ class DefaultEmptyDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +157,9 @@ class DefaultEmptyDataWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           DefaultTextStyle.merge(
-            style: Theme.of(context).textTheme.bodySmall,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
             textAlign: TextAlign.center,
             child: child,
           ),
