@@ -16,6 +16,7 @@ export 'package:collection/collection.dart';
 export 'package:dio/dio.dart';
 export 'package:go_router/go_router.dart';
 export 'package:recase/recase.dart';
+export 'package:permission_handler/permission_handler.dart';
 
 export 'src/odesign/form/form_field.dart';
 export 'src/odesign/form/old.dart';
@@ -58,6 +59,7 @@ export 'src/odesign/loader.dart';
 export 'src/odesign/loading_indicator.dart';
 export 'src/odesign/notification_badge.dart';
 export 'src/odesign/switch.dart';
+export 'src/odesign/functional_banner.dart';
 
 export 'src/utils/common/app_exception.dart';
 export 'src/utils/common/call_api_or_throw.dart';
