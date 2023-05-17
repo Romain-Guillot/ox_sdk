@@ -1,52 +1,52 @@
 class XValidators {
   const XValidators._();
 
-  static String? selectLimit<T>(List<T>? value, {int? min, int? max}) {
+  static XValidatorError? selectLimit<T>(List<T>? value, {int? min, int? max}) {
     if (value != null && min != null && value.length < min) {
-      return 'Minimum length: $min';
+      return XValidatorErrorSelectLimit(XValidatorErrorSelectLimitCause.tooSort, value.length, min, max);
     }
     if (value != null && max != null && value.length > max) {
-      return 'Maximum length: $max';
+      return XValidatorErrorSelectLimit(XValidatorErrorSelectLimitCause.tooLong, value.length, min, max);
     }
 
     return null;
   }
 
-  static String? mandatory<T>(T value) {
+  static XValidatorError? mandatory<T>(T value) {
     if (value == null) {
-      return 'Field mandatory';
+      return XValidatorErrorMandatory(XValidatorErrorMandatoryCause.notDefinedValue);
     }
     if (value is String && value.isEmpty) {
-      return 'Field cannot be empty';
+      return XValidatorErrorMandatory(XValidatorErrorMandatoryCause.emptyString);
     }
     if (value is Iterable && value.isEmpty) {
-      return 'Field cannot be empty';
+      return XValidatorErrorMandatory(XValidatorErrorMandatoryCause.emptyIterable);
     }
     return null;
   }
 
-  static String? textLimit(String? value, {int? min, int? max}) {
+  static XValidatorError? textLimit(String? value, {int? min, int? max}) {
     if (value != null && min != null && value.length < min) {
-      return 'Minimum length: $min';
+      return XValidatorErrorTextLimit(XValidatorErrorTextLimitCause.tooSort, value.length, min, max);
     }
     if (value != null && max != null && value.length > max) {
-      return 'Maximum length: $max';
+      return XValidatorErrorTextLimit(XValidatorErrorTextLimitCause.tooLong, value.length, min, max);
     }
 
     return null;
   }
 
-  static String? regex(String? value, String regex, [String? example]) {
+  static XValidatorError? regex(String? value, String regex, [String? example]) {
     if (value == null || value.isEmpty) {
       return null;
     }
     if (RegExp(regex).hasMatch(value)) {
       return null;
     }
-    return 'Format error ${example == null ? '' : 'e.g. $example'}';
+    return XValidatorErrorRegex(regex, example);
   }
 
-  static String? isDate(String? value) {
+  static XValidatorError? isDate(String? value) {
     if (value == null || value.isEmpty) {
       return null;
     }
@@ -54,6 +54,61 @@ class XValidators {
     if (parsedDate != null) {
       return null;
     }
-    return 'Not a date (yyyy-MM-dd)';
+    return XValidatorErrorDateFormat('yyyy-MM-dd');
   }
+}
+
+sealed class XValidatorError {}
+
+enum XValidatorErrorSelectLimitCause {
+  tooLong,
+  tooSort,
+}
+
+class XValidatorErrorSelectLimit implements XValidatorError {
+  XValidatorErrorSelectLimit(this.cause, this.current, this.min, this.max);
+
+  final XValidatorErrorSelectLimitCause cause;
+  final int current;
+  final int? min;
+  final int? max;
+}
+
+enum XValidatorErrorMandatoryCause {
+  notDefinedValue,
+  emptyString,
+  emptyIterable,
+}
+
+class XValidatorErrorMandatory implements XValidatorError {
+  XValidatorErrorMandatory(this.cause);
+
+  final XValidatorErrorMandatoryCause cause;
+}
+
+enum XValidatorErrorTextLimitCause {
+  tooLong,
+  tooSort,
+}
+
+class XValidatorErrorTextLimit implements XValidatorError {
+  XValidatorErrorTextLimit(this.cause, this.current, this.min, this.max);
+
+  final XValidatorErrorTextLimitCause cause;
+  final int current;
+  final int? min;
+  final int? max;
+}
+
+class XValidatorErrorRegex implements XValidatorError {
+  XValidatorErrorRegex(this.regex, [this.example]);
+
+  final String regex;
+  final String? example;
+}
+
+class XValidatorErrorDateFormat implements XValidatorError {
+  XValidatorErrorDateFormat(this.format);
+
+  final String format;
 }

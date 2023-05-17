@@ -1,26 +1,22 @@
 import 'dart:math' as math;
 
 extension ListSwap<T> on List<T> {
-
   T? get maybeFirst {
     try {
       return first;
-    } on StateError catch (e) {
+    } on StateError {
       return null;
     }
   }
 }
 
-
 extension ListNormalize<T extends num> on List<T> {
   List<double> normalized() {
-    final _max = max;
-    final _min = min;
-    return map((e) => (e - _min) / (math.max(1, _max - _min))).toList();
+    return map((e) => (e - min) / (math.max(1, max - min))).toList();
   }
 
   double denormalize(double value) {
-    return (value * (max-min)) + min;
+    return (value * (max - min)) + min;
   }
 
   double normalize(double value) {

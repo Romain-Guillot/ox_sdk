@@ -151,11 +151,12 @@ class OFieldError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fieldErros = field.errors();
+    final errorBuilder = InheritedOFormFieldErrorBuilder.of(context).builder;
 
     if (fieldErros != null && fieldErros.isNotEmpty) {
-      return Text(
-        fieldErros.first,
+      return DefaultTextStyle.merge(
         style: errorStyle(context),
+        child: errorBuilder(fieldErros.first),
       );
     } else {
       return const SizedBox.shrink();

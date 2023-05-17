@@ -20,7 +20,7 @@ class OLoadingIndicator extends StatelessWidget {
           const CircularProgressIndicator(),
           if (label != null)
             DefaultTextStyle.merge(
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
               child: Padding(padding: EdgeInsets.only(left: Theme.of(context).paddings.medium), child: label),
             )
         ],

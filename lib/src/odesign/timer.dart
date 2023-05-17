@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
 
-
-enum _TimerRunningEnum {
+enum TimerRunningEnum {
   playing,
   paused,
   finished,
 }
 
-
 class TimerState extends ChangeNotifier {
-
   double current = 0;
-  _TimerRunningEnum running = _TimerRunningEnum.playing;
+  TimerRunningEnum running = TimerRunningEnum.playing;
 
-  bool get isPlaying => running == _TimerRunningEnum.playing;
-  bool get isPaused => running == _TimerRunningEnum.paused;
-  bool get isFinished => running == _TimerRunningEnum.finished;
+  bool get isPlaying => running == TimerRunningEnum.playing;
+  bool get isPaused => running == TimerRunningEnum.paused;
+  bool get isFinished => running == TimerRunningEnum.finished;
 
   void pause() {
-    running = _TimerRunningEnum.paused;
+    running = TimerRunningEnum.paused;
     notifyListeners();
   }
 
   void play() {
-    running = _TimerRunningEnum.playing;
+    running = TimerRunningEnum.playing;
     notifyListeners();
   }
 
   void finished() {
-    running = _TimerRunningEnum.finished;
+    running = TimerRunningEnum.finished;
     notifyListeners();
   }
 }
-
 
 class TimerScope extends StatelessWidget {
   const TimerScope({
@@ -66,26 +62,25 @@ class TimerScope extends StatelessWidget {
 ///
 /// It will launch a timer of [duration] and call the [onFinished] function
 /// when the timer reach 0.
-/// 
-/// The UI feedback is a "progress bar" made with a [Container]. At the 
+///
+/// The UI feedback is a "progress bar" made with a [Container]. At the
 /// beginning the progress bar take all available width until reach 0px when the
 /// timer reaches 0.
-/// The background color can be animated or not. To enable the color animation 
-/// you need set the [animatedColor] flag to true and to provide a 
+/// The background color can be animated or not. To enable the color animation
+/// you need set the [animatedColor] flag to true and to provide a
 /// [colorSequence] that will be used to animate the color. If the timer widget
 /// is not animated the default color [ThemeData.colorScheme.surface] will be
 /// used.
-/// 
+///
 /// Note: Make sure to rebuild this widget with a new key if you want to restart
 ///       a timer when you rebuild the tree
-/// 
+///
 /// The timer management is deleguate to the [AnimationController] that handle
 /// the animation from the [duration] to 0. When the animation ends, the function
 /// [onFinished] is called.
-/// The animation is started in the initState and disposes in the dispose 
+/// The animation is started in the initState and disposes in the dispose
 /// method.
 class TimerWidget extends StatefulWidget {
-
   const TimerWidget({
     Key? key,
     required this.onFinished,
@@ -96,13 +91,12 @@ class TimerWidget extends StatefulWidget {
   final Function onFinished;
   final TweenSequence<Color?> colorSequence;
   final Duration duration;
-  
+
   @override
   TimerWidgetState createState() => TimerWidgetState();
 }
 
 class TimerWidgetState extends State<TimerWidget> with SingleTickerProviderStateMixin {
-
   late AnimationController animController;
   late VoidCallback animListener;
   late VoidCallback stateListener;
@@ -110,10 +104,7 @@ class TimerWidgetState extends State<TimerWidget> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
-    animController = AnimationController(
-      vsync: this,
-      duration: widget.duration
-    );
+    animController = AnimationController(vsync: this, duration: widget.duration);
     final TimerState state = TimerScope.of(widget.key);
     if (state.isPlaying) {
       animController.forward(from: state.current);
@@ -152,31 +143,23 @@ class TimerWidgetState extends State<TimerWidget> with SingleTickerProviderState
       alignment: Alignment.centerRight,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) => AnimatedBuilder(
-          animation: animController,
-          builder: (BuildContext context, _) {
-            final double screenWidth = constraints.maxWidth;
-            final double timerWidth = screenWidth- (screenWidth * animController.value);
-            return Container(
-              width: timerWidth,
-              height: 10,
-              decoration: BoxDecoration(
-                color: evaluateColor(),
-                borderRadius: BorderRadius.circular(999)
-              ),
-            );
-          }
-        ),
+            animation: animController,
+            builder: (BuildContext context, _) {
+              final double screenWidth = constraints.maxWidth;
+              final double timerWidth = screenWidth - (screenWidth * animController.value);
+              return Container(
+                width: timerWidth,
+                height: 10,
+                decoration: BoxDecoration(color: evaluateColor(), borderRadius: BorderRadius.circular(999)),
+              );
+            }),
       ),
     );
   }
 
-
-
-  /// Returns the color according to the progress of the animation if the 
+  /// Returns the color according to the progress of the animation if the
   /// animation color is enable.
   /// Returns the default color [Theme.of(context).colorScheme.surface] if
   /// the color animation is disable.
   Color evaluateColor() => widget.colorSequence.evaluate(AlwaysStoppedAnimation(animController.value))!;
 }
-
-

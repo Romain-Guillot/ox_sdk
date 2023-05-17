@@ -175,13 +175,13 @@ class _OCardState extends State<OCard> {
         case OCardStyle.highlight:
           cardColor = supportingColors.primary;
           foregroundColor = supportingColors.onPrimary;
-          buttonStyle = TextButton.styleFrom(primary: supportingColors.onVariant, backgroundColor: supportingColors.variant)
+          buttonStyle = TextButton.styleFrom(foregroundColor: supportingColors.onVariant, backgroundColor: supportingColors.variant)
               .merge(Theme.of(context).textButtonTheme.style);
           break;
         case OCardStyle.normal:
           cardColor = supportingColors.container;
           foregroundColor = supportingColors.onContainer;
-          buttonStyle = TextButton.styleFrom(primary: supportingColors.container, backgroundColor: supportingColors.onContainer)
+          buttonStyle = TextButton.styleFrom(foregroundColor: supportingColors.container, backgroundColor: supportingColors.onContainer)
               .merge(Theme.of(context).textButtonTheme.style);
           break;
       }

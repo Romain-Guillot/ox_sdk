@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ox_sdk/ox_sdk.dart';
+
+typedef XFieldValidator<T> = XValidatorError? Function(T? value);
 
 abstract class XField<T> {
   XField(T? initialValue)
@@ -13,7 +14,7 @@ abstract class XField<T> {
 
   T? get value;
 
-  List<FormFieldValidator<T>>? get validators;
+  List<XFieldValidator<T>>? get validators;
 
   void setInitialValue(T? initialValue) {
     _initialValue = initialValue;
@@ -32,8 +33,19 @@ abstract class XField<T> {
     return errors() != null && errors()?.isNotEmpty == true;
   }
 
-  List<String>? errors() {
-    return validators?.map((validator) => validator.call(value)).where((e) => e != null).toList().cast<String>();
+  List<XValidatorError>? errors() {
+    final List<XValidatorError> results = [];
+    final validators = this.validators;
+    if (validators != null) {
+      for (final validator in validators) {
+        final error = validator.call(value);
+        if (error != null) {
+          results.add(error);
+        }
+      }
+    }
+
+    return results;
   }
 
   bool canUndo() {
@@ -61,7 +73,7 @@ class XTextField extends XField<String> {
   final TextEditingController controller;
 
   @override
-  final List<FormFieldValidator<String>>? validators;
+  final List<XFieldValidator<String>>? validators;
 
   @override
   String get value => controller.text;
@@ -99,7 +111,7 @@ class XRadioListField<T> extends XField<T> {
   final List<ValueChanged<T?>> _listeners = [];
 
   @override
-  List<FormFieldValidator<T>>? validators;
+  List<XFieldValidator<T>>? validators;
 
   T? _value;
 
@@ -140,7 +152,7 @@ class XSelectListField<T> extends XField<List<T>> {
   final List<ValueChanged<List<T>?>> _listeners = [];
 
   @override
-  List<FormFieldValidator<List<T>>>? validators;
+  List<XFieldValidator<List<T>>>? validators;
 
   List<T>? _value;
 
@@ -203,7 +215,7 @@ class XDurationField extends XField<Duration> {
   }
 
   @override
-  final List<FormFieldValidator<Duration>>? validators;
+  final List<XFieldValidator<Duration>>? validators;
 
   final List<ValueChanged<Duration?>> _listeners = [];
 
@@ -264,7 +276,7 @@ class XDistanceField extends XField<DistanceFieldValue> {
   DistanceUnit? unit;
 
   @override
-  final List<FormFieldValidator<DistanceFieldValue>>? validators;
+  final List<XFieldValidator<DistanceFieldValue>>? validators;
 
   notifyListeners() {
     for (final listener in _listeners) {
@@ -308,7 +320,7 @@ class XLocationField extends XField<LatLng> {
   final List<ValueChanged<LatLng?>> _listeners = [];
 
   @override
-  List<FormFieldValidator<LatLng>>? validators;
+  List<XFieldValidator<LatLng>>? validators;
 
   LatLng? _value;
 
@@ -349,7 +361,7 @@ class XDateField extends XField<DateTime> {
   final List<ValueChanged<DateTime?>> _listeners = [];
 
   @override
-  List<FormFieldValidator<DateTime>>? validators;
+  List<XFieldValidator<DateTime>>? validators;
 
   DateTime? _value;
 
@@ -388,7 +400,7 @@ class XFormStateHelper {
   }
 
   final List<XField> fields;
-  final Map<XField, List<String>> errors = {};
+  final Map<XField, List<XValidatorError>> errors = {};
   final Set<XField> changes = {};
 
   bool hasErrors = false;

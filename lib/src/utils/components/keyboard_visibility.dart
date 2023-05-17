@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class KeyboardVisibilityBuilder extends StatefulWidget {
   const KeyboardVisibilityBuilder({
     Key? key,
@@ -12,11 +11,10 @@ class KeyboardVisibilityBuilder extends StatefulWidget {
   final Widget Function(BuildContext context, Widget? child, bool isKeyboardVisible) builder;
 
   @override
-  _KeyboardVisibilityBuilderState createState() => _KeyboardVisibilityBuilderState();
+  KeyboardVisibilityBuilderState createState() => KeyboardVisibilityBuilderState();
 }
 
-class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
-    with WidgetsBindingObserver {
+class KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder> with WidgetsBindingObserver {
   var _isKeyboardVisible = false;
 
   @override
@@ -33,7 +31,7 @@ class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
 
   @override
   void didChangeMetrics() {
-    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    final bottomInset = View.of(context).viewInsets.bottom;
     final newValue = bottomInset > 0.0;
     if (newValue != _isKeyboardVisible) {
       setState(() {
@@ -43,9 +41,12 @@ class _KeyboardVisibilityBuilderState extends State<KeyboardVisibilityBuilder>
   }
 
   @override
-  Widget build(BuildContext context) => widget.builder(context, widget.child, _isKeyboardVisible,);
+  Widget build(BuildContext context) => widget.builder(
+        context,
+        widget.child,
+        _isKeyboardVisible,
+      );
 }
-
 
 class KeyboardVisibilityAdaptative extends StatelessWidget {
   const KeyboardVisibilityAdaptative({

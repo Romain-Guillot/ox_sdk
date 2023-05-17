@@ -41,22 +41,33 @@ class OTextFormField extends StatelessWidget {
 
     final fieldErros = field.errors();
 
-    Widget child = TextField(
-      controller: field.controller,
-      style: style,
-      textAlign: textAlign,
-      minLines: minLines,
-      textCapitalization: textCapitalization,
-      maxLines: max(maxLines, minLines),
-      decoration: decoration?.copyWith(
-              hintText: hint,
-              hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
-                fontSize: style?.fontSize,
+    Widget child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: field.controller,
+          style: style,
+          textAlign: textAlign,
+          minLines: minLines,
+          textCapitalization: textCapitalization,
+          maxLines: max(maxLines, minLines),
+          decoration: decoration?.copyWith(
+                hintText: hint,
+                hintStyle: theme.inputDecorationTheme.hintStyle?.copyWith(
+                  fontSize: style?.fontSize,
+                ),
+              ) ??
+              InputDecoration(
+                hintText: hint,
               ),
-              errorText: decorated == false ? fieldErros?.firstOrNull : null) ??
-          InputDecoration(
-            hintText: hint,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: theme.paddings.medium),
+          child: OFieldError(
+            field: field,
           ),
+        )
+      ],
     );
 
     if (decorated) {
@@ -65,7 +76,7 @@ class OTextFormField extends StatelessWidget {
         fieldSize: size,
         layout: layout,
         expandField: expandField,
-        errors: fieldErros?.map(Text.new).toList(),
+        errors: fieldErros,
         child: Padding(
           padding: minLines > 1 ? EdgeInsets.symmetric(vertical: Theme.of(context).paddings.medium) : EdgeInsets.zero,
           child: child,

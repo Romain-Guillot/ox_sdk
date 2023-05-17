@@ -50,11 +50,13 @@ class FunctionalBanner extends StatelessWidget {
     required this.level,
     required this.child,
     this.onTap,
+    this.padding,
   });
 
   final FunctionalLevel level;
   final Widget child;
   final VoidCallback? onTap;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,12 @@ class FunctionalBanner extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: theme.paddings.tiny),
+          padding: EdgeInsets.only(
+            bottom: padding?.bottom ?? theme.paddings.tiny,
+            top: padding?.top ?? theme.paddings.tiny,
+            left: padding?.left ?? 0,
+            right: padding?.right ?? 0,
+          ),
           child: Row(
             children: [
               IconTheme.merge(

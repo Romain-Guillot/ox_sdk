@@ -4,7 +4,17 @@ import 'package:ox_sdk/src/odesign/themings/theme.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 import 'package:ox_sdk/src/xframework/form/form.dart';
 
+class ODurationFormFieldLabels {
+  const ODurationFormFieldLabels({
+    required this.hours,
+    required this.minutes,
+    required this.seconds,
+  });
 
+  final String hours;
+  final String minutes;
+  final String seconds;
+}
 
 class ODurationFormField extends StatefulWidget {
   const ODurationFormField({
@@ -15,7 +25,8 @@ class ODurationFormField extends StatefulWidget {
     this.style,
     this.layout,
     this.expandField = false,
-    this.labelStyle
+    this.labelStyle,
+    required this.labels,
   }) : super(key: key);
 
   final XDurationField field;
@@ -25,6 +36,7 @@ class ODurationFormField extends StatefulWidget {
   final LayoutDensity? layout;
   final bool expandField;
   final TextStyle? labelStyle;
+  final ODurationFormFieldLabels labels;
 
   @override
   State<ODurationFormField> createState() => _ODurationFormFieldState();
@@ -37,7 +49,7 @@ class _ODurationFormFieldState extends State<ODurationFormField> {
   void initState() {
     super.initState();
     callback = (value) {
-      setState(() { });
+      setState(() {});
     };
     widget.field.addListener(callback);
   }
@@ -55,7 +67,7 @@ class _ODurationFormFieldState extends State<ODurationFormField> {
       fieldSize: widget.size,
       layout: widget.layout,
       expandField: widget.expandField,
-      errors: widget.field.errors()?.map(Text.new).toList(),
+      errors: widget.field.errors(),
       labelStyle: widget.labelStyle,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,44 +75,37 @@ class _ODurationFormFieldState extends State<ODurationFormField> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: TextField(
-              controller: widget.field.hoursController,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: 'hours',
-              ),
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Theme.of(context).paddings.small
+              child: TextField(
+            controller: widget.field.hoursController,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: widget.labels.hours,
             ),
+          )),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Theme.of(context).paddings.small),
             child: Text(':', style: Theme.of(context).textTheme.displaySmall),
           ),
           Flexible(
-            child: TextField(
-              controller: widget.field.minutesController,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: 'minutes',
-              ),
-            )
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Theme.of(context).paddings.small
+              child: TextField(
+            controller: widget.field.minutesController,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: widget.labels.minutes,
             ),
+          )),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: Theme.of(context).paddings.small),
             child: Text(':', style: Theme.of(context).textTheme.displaySmall),
           ),
           Flexible(
-             child: TextField(
-              controller: widget.field.secondsController,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: 'seconds',
-              ),
-            )
-          ),    
+              child: TextField(
+            controller: widget.field.secondsController,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              hintText: widget.labels.seconds,
+            ),
+          )),
         ],
       ),
     );

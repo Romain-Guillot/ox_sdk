@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart' hide TextDirection;
-import 'package:ox_sdk/src/odesign/drawer.dart';
-import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
-import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
 enum OButtonStyle {
   primary,
@@ -156,7 +153,10 @@ class _OButtonState<T> extends State<OButton<T>> {
       case OButtonStyle.primary:
         return style;
       case OButtonStyle.secondary:
-        return TextButton.styleFrom(backgroundColor: Colors.transparent, primary: style?.backgroundColor?.resolve({})).merge(style);
+        return TextButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          foregroundColor: style?.backgroundColor?.resolve({}),
+        ).merge(style);
     }
   }
 

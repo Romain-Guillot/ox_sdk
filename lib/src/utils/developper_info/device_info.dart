@@ -140,18 +140,18 @@ class DeviceInfoWidget extends StatelessWidget {
       return ODataGrid<DeviceInfoItem>(
         columns: [
           OGridColumn(
-            key: Key('info'),
+            key: const Key('info'),
             weight: 1,
             label: 'Info',
             renderer: (index, info) => Text(info.label),
           ),
           OGridColumn(
-            key: Key('Value'),
+            key: const Key('Value'),
             weight: 2,
             label: 'Value',
             renderer: (index, info) => Text(
               info.value ?? 'Unknown',
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           )
         ],
@@ -228,7 +228,7 @@ class LogItemWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(log.emitter, style: Theme.of(context).textTheme.caption),
+                    Text(log.emitter, style: Theme.of(context).textTheme.bodySmall),
                     Text(log.message?.toString() ?? 'No message'),
                   ],
                 ),

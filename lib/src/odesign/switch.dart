@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
 class OSwitch extends StatelessWidget {
   const OSwitch({

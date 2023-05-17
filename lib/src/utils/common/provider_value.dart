@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart';
-import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
-import 'package:ox_sdk/src/utils/components/padding_spacer.dart';
 
 class ProviderValue<T, K> {
   ProviderValue({

@@ -1,25 +1,27 @@
 import 'dart:collection';
 
-
-
-class CyclicList<E> extends DoubleLinkedQueue<E> {
+class CyclicList<E> extends Iterable<E> {
   CyclicList(this.limit, {this.reverse = false});
+
+  final _queue = DoubleLinkedQueue<E>();
 
   final int limit;
   final bool reverse;
 
-  @override
   void add(E value) {
     if (reverse) {
-      super.addFirst(value);
+      _queue.addFirst(value);
       while (super.length > limit) {
-        super.removeLast();
+        _queue.removeLast();
       }
     } else {
-      super.add(value);
+      _queue.add(value);
       while (super.length > limit) {
-        super.removeFirst();
+        _queue.removeFirst();
       }
     }
   }
+
+  @override
+  Iterator<E> get iterator => _queue.iterator;
 }

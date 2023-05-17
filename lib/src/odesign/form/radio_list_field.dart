@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
-
-enum RadioFormFieldType {
-  list,
-  dropdown
-}
-
+enum RadioFormFieldType { list, dropdown }
 
 const _kDefaultNullItem = ORadioItem(value: null, label: Text('N/A'));
 
@@ -14,14 +9,13 @@ class ORadioItem<T> {
   const ORadioItem({
     required this.value,
     this.icon,
-    required this.label
+    required this.label,
   });
 
   final T value;
   final Widget? icon;
   final Widget label;
 }
-
 
 class ORadioFormField<T> extends StatefulWidget {
   const ORadioFormField({
@@ -32,7 +26,7 @@ class ORadioFormField<T> extends StatefulWidget {
     this.hint,
     this.controlAffinity = ListTileControlAffinity.trailing,
     this.label,
-    this.allowNullValue = false
+    this.allowNullValue = false,
   }) : super(key: key);
 
   final RadioFormFieldType type;
@@ -48,7 +42,6 @@ class ORadioFormField<T> extends StatefulWidget {
 }
 
 class _ORadioFormFieldState<T> extends State<ORadioFormField<T>> {
-
   late ValueChanged listener;
 
   @override
@@ -56,7 +49,7 @@ class _ORadioFormFieldState<T> extends State<ORadioFormField<T>> {
     super.initState();
     listener = (value) {
       if (mounted) {
-        setState(() { });
+        setState(() {});
       }
     };
     widget.field.addListener(listener);
@@ -72,31 +65,29 @@ class _ORadioFormFieldState<T> extends State<ORadioFormField<T>> {
   Widget build(BuildContext context) {
     final fontStyle = Theme.of(context).textTheme.bodyLarge;
     final selectedColor = Theme.of(context).radioTheme.fillColor?.resolve({MaterialState.selected});
-    return  Builder(
-      builder: (context) {
-        switch (widget.type) {
-          case RadioFormFieldType.list:
-            return _RadioList(
-              fontStyle: fontStyle, 
-              selectedColor: selectedColor,
-              field: widget.field,
-              controlAffinity: widget.controlAffinity,
-              items: widget.items,
-              allowNullValue: widget.allowNullValue,
-            );
-          case RadioFormFieldType.dropdown:
-            return _Dropdown(
-              fontStyle: fontStyle, 
-              selectedColor: selectedColor,
-              field: widget.field,
-              items: widget.items,
-              hint: widget.hint,
-              label: widget.label,
-              allowNullValue: widget.allowNullValue,
-            );
-        }
+    return Builder(builder: (context) {
+      switch (widget.type) {
+        case RadioFormFieldType.list:
+          return _RadioList(
+            fontStyle: fontStyle,
+            selectedColor: selectedColor,
+            field: widget.field,
+            controlAffinity: widget.controlAffinity,
+            items: widget.items,
+            allowNullValue: widget.allowNullValue,
+          );
+        case RadioFormFieldType.dropdown:
+          return _Dropdown(
+            fontStyle: fontStyle,
+            selectedColor: selectedColor,
+            field: widget.field,
+            items: widget.items,
+            hint: widget.hint,
+            label: widget.label,
+            allowNullValue: widget.allowNullValue,
+          );
       }
-    );
+    });
   }
 }
 
@@ -109,9 +100,8 @@ class _RadioList<T> extends StatelessWidget {
     required this.field,
     required this.controlAffinity,
     this.label,
-    required this.allowNullValue
+    required this.allowNullValue,
   }) : super(key: key);
-
 
   final TextStyle? fontStyle;
   final Color? selectedColor;
@@ -130,40 +120,22 @@ class _RadioList<T> extends StatelessWidget {
       child: Column(
         children: effectiveItems.map((item) {
           final isSelected = item.value == field.value;
-          final effectiveFontStyle = fontStyle?.copyWith(
-            color: isSelected ? selectedColor : null 
-          );
+          final effectiveFontStyle = fontStyle?.copyWith(color: isSelected ? selectedColor : null);
           return RadioListTile<T>(
-            controlAffinity: controlAffinity,
-            value: item.value, 
-            selected: isSelected,
-            secondary: item.icon == null ? null : IconTheme(
-              data: IconThemeData(
-                size: 24,
-                color: effectiveFontStyle?.color
-              ),
-              child: item.icon!
-            ),
-            
-            groupValue: field.value, 
-            title: DefaultTextStyle.merge(
-              style: effectiveFontStyle,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: item.label
-              )
-            ),
-            onChanged: (newValue) {
-              field.setValue(newValue);
-            }
-          );
+              controlAffinity: controlAffinity,
+              value: item.value,
+              selected: isSelected,
+              secondary: item.icon == null ? null : IconTheme(data: IconThemeData(size: 24, color: effectiveFontStyle?.color), child: item.icon!),
+              groupValue: field.value,
+              title: DefaultTextStyle.merge(style: effectiveFontStyle, child: Align(alignment: Alignment.centerLeft, child: item.label)),
+              onChanged: (newValue) {
+                field.setValue(newValue);
+              });
         }).toList(),
       ),
     );
   }
 }
-
-
 
 class _Dropdown<T> extends StatelessWidget {
   const _Dropdown({
@@ -174,9 +146,8 @@ class _Dropdown<T> extends StatelessWidget {
     required this.field,
     this.hint,
     this.label,
-    required this.allowNullValue
+    required this.allowNullValue,
   }) : super(key: key);
-
 
   final Widget? hint;
   final TextStyle? fontStyle;
@@ -192,22 +163,19 @@ class _Dropdown<T> extends StatelessWidget {
 
     return OCard(
       hasContentPadding: true,
-      contentPadding: EdgeInsets.only(
-        left: Theme.of(context).paddings.medium
-      ),
+      contentPadding: EdgeInsets.only(left: Theme.of(context).paddings.medium),
       child: Row(
         children: [
-          if (label != null)...[
+          if (label != null) ...[
             Align(
               alignment: Alignment.centerRight,
               child: DefaultTextStyle.merge(
                 style: Theme.of(context).inputDecorationTheme.labelStyle,
-                child: label!
-              )
+                child: label!,
+              ),
             ),
-            PaddingSpacer(),
+            const PaddingSpacer(),
           ],
-
           Expanded(
             child: DropdownButtonHideUnderline(
               child: DropdownButton<T>(
@@ -215,19 +183,18 @@ class _Dropdown<T> extends StatelessWidget {
                 onChanged: (newValue) {
                   field.setValue(newValue);
                 },
-                hint: hint == null ? null :DefaultTextStyle.merge(
-                  style: Theme.of(context).inputDecorationTheme.hintStyle,
-                  child: hint!
-                ),
+                hint: hint == null
+                    ? null
+                    : DefaultTextStyle.merge(
+                        style: Theme.of(context).inputDecorationTheme.hintStyle,
+                        child: hint!,
+                      ),
                 items: effectiveItems.map((e) {
                   return DropdownMenuItem(
                     value: e.value,
-                    child: DefaultTextStyle.merge(
-                      style: fontStyle,
-                      child: e.label
-                    ),
+                    child: DefaultTextStyle.merge(style: fontStyle, child: e.label),
                   );
-                }).toList(), 
+                }).toList(),
               ),
             ),
           ),
@@ -236,6 +203,3 @@ class _Dropdown<T> extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -1,12 +1,17 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
 class ODateFormField extends StatefulWidget {
-  const ODateFormField(
-      {Key? key, this.label, required this.field, this.size, this.layout, this.expandField = false, this.decorated = true, required this.buttonLabel})
-      : super(key: key);
+  const ODateFormField({
+    Key? key,
+    this.label,
+    required this.field,
+    this.size,
+    this.layout,
+    this.expandField = false,
+    this.decorated = true,
+    required this.buttonLabel,
+  }) : super(key: key);
 
   final XDateField field;
   final Widget? label;
@@ -78,7 +83,7 @@ class _ODateFormFieldState extends State<ODateFormField> {
             }
           },
           child: Padding(
-            padding: theme.inputDecorationTheme.contentPadding ?? EdgeInsets.only(),
+            padding: theme.inputDecorationTheme.contentPadding ?? const EdgeInsets.only(),
             child: child,
           ),
         ),
@@ -90,7 +95,7 @@ class _ODateFormFieldState extends State<ODateFormField> {
         fieldSize: widget.size,
         layout: widget.layout,
         expandField: widget.expandField,
-        errors: widget.field.errors()?.map(Text.new).toList(),
+        errors: widget.field.errors(),
         child: child,
       );
     }

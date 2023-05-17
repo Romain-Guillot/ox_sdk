@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ox_sdk/src/odesign/button.dart';
 import 'package:ox_sdk/src/odesign/themings/theme_extension.dart';
 
 class ODialog extends StatelessWidget {
@@ -34,8 +33,8 @@ class ODialog extends StatelessWidget {
                       ConstrainedBox(
                         constraints: BoxConstraints.tightFor(width: 26 + padding * 2),
                         child: IconTheme.merge(
-                          data: IconThemeData(size: 26),
-                          child: CloseButton(),
+                          data: const IconThemeData(size: 26),
+                          child: const CloseButton(),
                         ),
                       ),
                       Expanded(child: title ?? Container()),

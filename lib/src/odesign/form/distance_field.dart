@@ -4,8 +4,6 @@ import 'package:ox_sdk/src/odesign/themings/theme.dart';
 import 'package:ox_sdk/src/utils/common/distance.dart';
 import 'package:ox_sdk/src/xframework/form/form.dart';
 
-
-
 class ODistanceFormField extends StatefulWidget {
   const ODistanceFormField({
     Key? key,
@@ -37,7 +35,7 @@ class _ODistanceFormFieldState extends State<ODistanceFormField> {
   void initState() {
     super.initState();
     callback = (value) {
-      setState(() { });
+      setState(() {});
     };
     widget.field.addListener(callback);
   }
@@ -55,7 +53,7 @@ class _ODistanceFormFieldState extends State<ODistanceFormField> {
       fieldSize: widget.size,
       layout: widget.layout,
       expandField: widget.expandField,
-      errors: widget.field.errors()?.map(Text.new).toList(),
+      errors: widget.field.errors(),
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,11 +62,10 @@ class _ODistanceFormFieldState extends State<ODistanceFormField> {
               child: TextFormField(
                 controller: widget.field.valueController,
                 decoration: InputDecoration(
-                  hintText: widget.hint ?? 'Distance'
+                  hintText: widget.hint ?? 'Distance',
                 ),
-              )
+              ),
             ),
-      
             VerticalDivider(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
               thickness: 2,
@@ -77,17 +74,17 @@ class _ODistanceFormFieldState extends State<ODistanceFormField> {
             ),
             DropdownButton<DistanceUnit>(
               onChanged: (value) {
-                widget.field.setValue(widget.field.value.copyWith(
-                  unit: value
-                ));
+                widget.field.setValue(widget.field.value.copyWith(unit: value));
               },
               underline: Container(),
               value: widget.field.unit,
-              items: DistanceUnit.values.map((unit) => DropdownMenuItem<DistanceUnit>(
-                value: unit,
-                child: Text(unit.name),
-              )).toList() 
-            )
+              items: DistanceUnit.values
+                  .map((unit) => DropdownMenuItem<DistanceUnit>(
+                        value: unit,
+                        child: Text(unit.name),
+                      ))
+                  .toList(),
+            ),
           ],
         ),
       ),
