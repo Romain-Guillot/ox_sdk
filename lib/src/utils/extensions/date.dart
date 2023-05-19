@@ -7,6 +7,7 @@ enum DateFormatType {
   writtenDate,
   datetimeShort,
   datetimeFull,
+  writtenDateShort,
 }
 
 extension DateFormatExt on DateTime {
@@ -19,6 +20,9 @@ extension DateFormatExt on DateTime {
         break;
       case DateFormatType.dateShort:
         effectiveDF = DateFormat.MMMd(locale);
+        break;
+      case DateFormatType.writtenDateShort:
+        effectiveDF = DateFormat.MMMEd(locale);
         break;
       case DateFormatType.datetimeFull:
         effectiveDF = DateFormat.yMd(locale).add_jms();

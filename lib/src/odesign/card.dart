@@ -14,6 +14,7 @@ enum OCardFunction {
   secondary,
   tertiary,
   error,
+  primaryHighlight,
 }
 
 enum OCardDensity { small, medium, large }
@@ -33,6 +34,8 @@ extension on OCardFunction {
         return Theme.of(context).colorScheme.tertiaryContainer;
       case OCardFunction.surface:
         return Theme.of(context).colorScheme.surface;
+      case OCardFunction.primaryHighlight:
+        return Theme.of(context).colorScheme.primary;
     }
   }
 
@@ -48,6 +51,8 @@ extension on OCardFunction {
         return Theme.of(context).colorScheme.onTertiaryContainer;
       case OCardFunction.surface:
         return Theme.of(context).colorScheme.onSurface;
+      case OCardFunction.primaryHighlight:
+        return Theme.of(context).colorScheme.onPrimary;
     }
   }
 }
@@ -193,7 +198,7 @@ class _OCardState extends State<OCard> {
     return Card(
       margin: EdgeInsets.zero,
       color: cardColor,
-      elevation: 1,
+      elevation: widget.elevation,
       shape: RoundedRectangleBorder(
         borderRadius: radius,
       ),
@@ -209,57 +214,62 @@ class _OCardState extends State<OCard> {
             onLongPress: widget.onLongPress,
             child: SizedBox(
               width: widget.fullWidth ? double.maxFinite : null,
-              child: IconTheme.merge(
-                data: IconThemeData(color: foregroundColor),
-                child: DefaultTextStyle.merge(
-                  style: TextStyle(color: foregroundColor),
-                  child: Column(
-                    mainAxisSize: widget.mainAxisSize,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (widget.title != null || widget.actions != null)
-                        InkWell(
-                          onTap: widget.expandable
-                              ? () {
-                                  collapsed = !collapsed;
-                                }
-                              : null,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: padding),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child: widget.title != null
-                                        ? Padding(
-                                            padding: EdgeInsets.symmetric(vertical: padding),
-                                            child: DefaultTextStyle.merge(
-                                              style: Theme.of(context).textTheme.titleMedium,
-                                              textAlign: widget.centerTitle ? TextAlign.center : TextAlign.left,
-                                              child: Align(
-                                                alignment: widget.centerTitle ? Alignment.center : Alignment.centerLeft,
-                                                child: widget.title!,
+              child: ProgressIndicatorTheme(
+                data: ProgressIndicatorTheme.of(context).copyWith(
+                  color: widget.function == OCardFunction.primaryHighlight ? foregroundColor : null,
+                ),
+                child: IconTheme.merge(
+                  data: IconThemeData(color: foregroundColor),
+                  child: DefaultTextStyle.merge(
+                    style: TextStyle(color: foregroundColor),
+                    child: Column(
+                      mainAxisSize: widget.mainAxisSize,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (widget.title != null || widget.actions != null)
+                          InkWell(
+                            onTap: widget.expandable
+                                ? () {
+                                    collapsed = !collapsed;
+                                  }
+                                : null,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: padding),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: widget.title != null
+                                          ? Padding(
+                                              padding: EdgeInsets.symmetric(vertical: padding),
+                                              child: DefaultTextStyle.merge(
+                                                style: Theme.of(context).textTheme.titleMedium,
+                                                textAlign: widget.centerTitle ? TextAlign.center : TextAlign.left,
+                                                child: Align(
+                                                  alignment: widget.centerTitle ? Alignment.center : Alignment.centerLeft,
+                                                  child: widget.title!,
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                        : Container()),
-                                if (widget.actions != null)
-                                  ...widget.actions!.map((action) {
-                                    final isLastAction = widget.actions!.last == action;
-                                    return Padding(
-                                      padding: EdgeInsets.only(right: !isLastAction ? (Theme.of(context).paddings.small) : 0),
-                                      child: action,
-                                    );
-                                  }),
-                                if (widget.expandable)
-                                  Icon(
-                                    collapsed ? Icons.arrow_drop_down_outlined : Icons.arrow_drop_up_outlined,
-                                  ),
-                              ],
+                                            )
+                                          : Container()),
+                                  if (widget.actions != null)
+                                    ...widget.actions!.map((action) {
+                                      final isLastAction = widget.actions!.last == action;
+                                      return Padding(
+                                        padding: EdgeInsets.only(right: !isLastAction ? (Theme.of(context).paddings.small) : 0),
+                                        child: action,
+                                      );
+                                    }),
+                                  if (widget.expandable)
+                                    Icon(
+                                      collapsed ? Icons.arrow_drop_down_outlined : Icons.arrow_drop_up_outlined,
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      if (collapsed == false) effectiveChild,
-                    ],
+                        if (collapsed == false) effectiveChild,
+                      ],
+                    ),
                   ),
                 ),
               ),
