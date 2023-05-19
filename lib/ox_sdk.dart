@@ -97,6 +97,8 @@ export 'src/utils/extensions/intersperse_extensions.dart';
 export 'src/utils/extensions/locale.extension.dart';
 export 'src/utils/extensions/string.extension.dart';
 
+export 'src/utils/widget_image_converter/widget_image_converter.dart';
+
 export 'src/utils/developper_info/device_info.dart';
 export 'src/utils/developper_info/device_info.service.dart';
 
