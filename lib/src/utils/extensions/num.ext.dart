@@ -6,7 +6,7 @@ extension NumFormat on num {
     // if (toString().length <= 4) {
     //   return toString();
     // }
-    
+
     final numberFormatter = NumberFormat(null, Localizations.localeOf(context).languageCode);
     numberFormatter.minimumFractionDigits = 0;
     var result = numberFormatter.format(this);
@@ -15,6 +15,22 @@ extension NumFormat on num {
       result = withoutGroupSep;
     }
     return result;
+  }
+
+  bool isGreaterThan(num other) {
+    return this > other;
+  }
+
+  bool isGreaterOrEqualThan(num other) {
+    return this >= other;
+  }
+
+  bool isLessThan(num other) {
+    return this < other;
+  }
+
+  bool isLessOrEqualThan(num other) {
+    return this <= other;
   }
 }
 
