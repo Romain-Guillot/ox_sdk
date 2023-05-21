@@ -40,7 +40,10 @@ class OTile extends StatelessWidget {
               ),
             PaddingSpacer.small(),
             Expanded(child: Align(alignment: Alignment.centerLeft, child: child)),
-            if (trailing != null) Flexible(child: trailing!),
+            if (trailing != null) ...[
+              trailing!,
+              const PaddingSpacer(),
+            ],
             if (actions != null) ...[
               const PaddingSpacer(),
               ...actions!
