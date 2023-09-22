@@ -1,27 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:ox_sdk/ox_sdk.dart';
 
-sealed class ProviderValue<T, E> {}
+@Deprecated('Use ProviderValue')
+class DeprecatedProviderValue<T, K> {
+  DeprecatedProviderValue({
+    this.notify,
+  });
 
-class LoadingValue<T, E> extends ProviderValue<T, E> {}
+  DeprecatedProviderValue.fromValue(
+    T value, {
+    this.notify,
+  }) {
+    this.value = value;
+  }
 
-class ErrorValue<T, E> extends ProviderValue<T, E> {
-  ErrorValue(this.error);
+  final Function? notify;
 
-  final E error;
-}
+  T? _value;
+  set value(T? value) {
+    _value = value;
+    _initialized = true;
+    _error = null;
+    notify?.call();
+  }
 
-class DataValue<T, E> extends ProviderValue<T, E> {
-  DataValue(this.value);
+  T? get value => _value;
+  bool get hasData {
+    if (value is Iterable) {
+      return value != null && (value as Iterable<dynamic>).isNotEmpty;
+    } else {
+      return value != null;
+    }
+  }
 
-  final T value;
+  K? _error;
+  set error(K? error) {
+    _error = error;
+    _initialized = true;
+    _value = null;
+    notify?.call();
+  }
+
+  K? get error => _error;
+  bool get hasError => _error != null;
+
+  bool? _initialized;
+  bool get isInitialized => _initialized == true;
+  bool get isNotInitialized => !isInitialized;
+
+  void reset() {
+    _error = null;
+    _value = null;
+    _initialized = false;
+    notify?.call();
+  }
 }
 
 /// [EmptyDataWidget]
 /// [ErrorDataWidget]
 /// [LoadingDataWidget]
-class ProviderValueBuilder<T, K> extends StatelessWidget {
-  const ProviderValueBuilder({
+@Deprecated('Use ProviderValue')
+class DeprecatedProviderValueBuilder<T, K> extends StatelessWidget {
+  const DeprecatedProviderValueBuilder({
     Key? key,
     required this.value,
     required this.dataBuilder,
@@ -32,7 +72,7 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
     this.refreshButton,
   }) : super(key: key);
 
-  final ProviderValue<T, K> value;
+  final DeprecatedProviderValue<T, K> value;
 
   final bool isSliver;
   final Widget Function(BuildContext context)? loadingBuilder;
@@ -43,51 +83,31 @@ class ProviderValueBuilder<T, K> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loadingBuilder = this.loadingBuilder;
-    final errorBuilder = this.errorBuilder;
-
     Widget child;
-
-    switch (value) {
-      case LoadingValue():
-        if (loadingBuilder != null) {
-          child = loadingBuilder(context);
-        } else {
-          child = const OLoadingIndicator();
-        }
-        break;
-      case ErrorValue():
-        final error = (value as ErrorValue).error;
-        if (errorBuilder != null) {
-          child = errorBuilder(context, error);
-        } else {
-          child = DefaultErrorWidget(
-            refreshButton: refreshButton,
-            error: error.toString(),
-          );
-        }
-        break;
-
-      case DataValue():
-        final data = (value as DataValue).value;
-        if (emptyDataBuilder != null && !data.hasData) {
-          child = emptyDataBuilder!.call(context);
-        } else {
-          child = dataBuilder(context, data);
-        }
-        break;
+    if (value.hasError) {
+      child = errorBuilder != null
+          ? errorBuilder!(context, value.error)
+          : DefaultErrorWidget(
+              refreshButton: refreshButton,
+              error: value.error.toString(),
+            );
+    } else if (!value.isInitialized) {
+      child = loadingBuilder != null ? loadingBuilder!(context) : const OLoadingIndicator();
+    } else if (emptyDataBuilder != null && !value.hasData) {
+      child = emptyDataBuilder!.call(context);
+    } else {
+      return dataBuilder(context, value.value as T);
     }
-
     if (isSliver) {
       child = SliverToBoxAdapter(child: child);
     }
-
     return child;
   }
 }
 
-class DefaultErrorWidget extends StatelessWidget {
-  const DefaultErrorWidget({
+@Deprecated('Use ProviderValue')
+class DeprecatedDefaultErrorWidget extends StatelessWidget {
+  const DeprecatedDefaultErrorWidget({
     Key? key,
     required this.error,
     this.refreshButton,
@@ -117,8 +137,9 @@ class DefaultErrorWidget extends StatelessWidget {
   }
 }
 
-class DefaultEmptyDataWidget extends StatelessWidget {
-  const DefaultEmptyDataWidget({
+@Deprecated('Use ProviderValue')
+class DeprecatedDefaultEmptyDataWidget extends StatelessWidget {
+  const DeprecatedDefaultEmptyDataWidget({
     Key? key,
     required this.child,
     this.button,

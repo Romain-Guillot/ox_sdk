@@ -79,6 +79,7 @@ export 'src/utils/common/stopwatch.dart';
 export 'src/utils/common/distance.dart';
 export 'src/utils/common/intersperse.dart';
 export 'src/utils/common/datetime.dart';
+export 'src/utils/enums/week_day.enum.dart';
 
 export 'src/utils/components/adaptative_layout_builder.dart';
 export 'src/utils/components/keyboard_visibility.dart';

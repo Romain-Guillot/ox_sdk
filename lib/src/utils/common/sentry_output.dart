@@ -1,11 +1,8 @@
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:logger/logger.dart';
 
-
 class SentryLogOutput extends LogOutput {
-  SentryLogOutput({
-    required this.baseUrl
-  });
+  SentryLogOutput({required this.baseUrl});
 
   final String baseUrl;
 
@@ -20,7 +17,8 @@ class SentryLogOutput extends LogOutput {
 
   @override
   void output(OutputEvent event) {
-    Sentry.captureMessage(event.lines.join('\n'), 
+    Sentry.captureMessage(
+      event.lines.join('\n'),
       level: event.level.toSentry(),
     );
   }
@@ -43,6 +41,14 @@ extension on Level {
         return SentryLevel.error;
       case Level.warning:
         return SentryLevel.warning;
+      case Level.all:
+        return SentryLevel.debug;
+      case Level.trace:
+        return SentryLevel.debug;
+      case Level.fatal:
+        return SentryLevel.error;
+      case Level.off:
+        return SentryLevel.error;
     }
   }
 }
